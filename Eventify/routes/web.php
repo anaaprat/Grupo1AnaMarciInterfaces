@@ -21,4 +21,9 @@ use App\Http\Controllers\UserController;
 Route::resource('users', UserController::class);
 Auth::routes();
 
-Route::get('/', [UserController::class,'index']);
+Route::get('/', [UserController::class, 'index']);
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
+Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
+Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
+Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');

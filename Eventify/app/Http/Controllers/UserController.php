@@ -37,9 +37,10 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::findOrFail($id);
-        return view('users.show', compact('user'));
+        $user = User::findOrFail($id); // Encuentra al usuario por su ID o lanza un error 404
+        return view('users.show', compact('user')); // Pasa los datos del usuario a la vista
     }
+    
 
 
     /**
@@ -67,11 +68,12 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
         $user = User::findOrFail($id);
         $user->deleted = 1;
         $user->save();
         return redirect()->route('users.index');
     }
-    
+
 }
