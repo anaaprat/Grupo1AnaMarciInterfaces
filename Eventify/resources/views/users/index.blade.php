@@ -64,8 +64,19 @@
                             <i class="fas fa-eye"></i>
                         </button>
 
-                        <button><i class="fas fa-trash"></i></button>
-                        <button><i class="fas fa-edit"></i></button>
+                        <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit"
+                                onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+
+                        <button onclick="window.location.href='{{ route('users.edit', $user->id) }}'">
+                            <i class="fas fa-edit"></i>
+                        </button>
+
                     </td>
                 </tr>
             @endforeach

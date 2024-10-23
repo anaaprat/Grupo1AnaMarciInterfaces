@@ -40,7 +40,7 @@ class UserController extends Controller
         $user = User::findOrFail($id); // Encuentra al usuario por su ID o lanza un error 404
         return view('users.show', compact('user')); // Pasa los datos del usuario a la vista
     }
-    
+
 
 
     /**
@@ -52,17 +52,24 @@ class UserController extends Controller
         return view('users.edit', compact('user'));
     }
 
-
-
-
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
+
+        // Validar los datos del formulario
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'role' => 'required|string',
+        ]);
+
+        // Actualizar los datos del usuario
         $user->update($request->all());
-        return redirect()->route('users.index');
+
+        return redirect()->route('users.index')->with('success', 'Usuario actualizado correctamente.');
     }
 
     /**
@@ -71,9 +78,9 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
-        $user->deleted = 1;
+        $user->deleted = 1; // Marcamos el usuario como eliminado
         $user->save();
-        return redirect()->route('users.index');
-    }
 
+        return redirect()->route('users.index')->with('success', 'Usuario eliminado correctamente.');
+    }
 }
