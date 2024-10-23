@@ -25,7 +25,7 @@ class UserFactory extends Factory
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'), // password
-            'role' => $this->faker->randomElement(['User', 'Admin']), // Rol aleatorio entre User y Admin
+            'role' => 'User', // Definir solo "User" como valor por defecto para el rol
             'profile_picture' => 'default.jpg',  // Puedes usar un valor por defecto o generar imágenes
             'actived' => $this->faker->boolean(), // Valor booleano aleatorio
             'email_confirmed' => $this->faker->boolean(), // Booleano aleatorio
