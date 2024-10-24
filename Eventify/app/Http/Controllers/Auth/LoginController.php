@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request; // Importar correctamente Request
+use Illuminate\Support\Facades\Auth; // Importar correctamente Auth
 
 class LoginController extends Controller
 {
@@ -12,33 +14,64 @@ class LoginController extends Controller
     | Login Controller
     |--------------------------------------------------------------------------
     |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
+    | Este controlador maneja la autenticación de usuarios para la aplicación y
+    | redirige a la pantalla principal después del login.
     |
     */
 
     use AuthenticatesUsers;
 
     /**
-     * Where to redirect users after login.
+     * Redirección después del login.
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/dashboard'; // Cambia esto según dónde quieras redirigir
 
     /**
-     * Create a new controller instance.
+     * Crear una nueva instancia del controlador.
      *
      * @return void
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
-        $this->middleware('auth')->only('logout');
+        $this->middleware('guest')->except('logout'); // No es necesario middleware 'auth' para logout
     }
+
+    /**
+     * Mostrar el formulario de login.
+     *
+     * @return \Illuminate\View\View
+     */
     public function showLoginForm()
     {
-        return view('auth.login'); // Asegúrate de que esta vista exista
+        return view('auth.login'); // Asegúrate de tener esta vista en resources/views/auth/login.blade.php
+    }
+
+    /**
+     * Manejar el login de usuarios.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function login(Request $request)
+    {
+        // Validar las credenciales del usuario
+        $credentials = $request->only('email', 'password');
+
+        // Intentar autenticar al usuario
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+            // Verificar si el usuario está activo
+            if ($user->is_active) {
+                return redirect()->intended($this->redirectTo); // Redirigir al dashboard u otra ruta
+            } else {
+                Auth::logout();
+                return back()->withErrors(['Su cuenta no está activa.']); // Error si la cuenta no está activa
+            }
+        }
+
+        // Credenciales inválidas
+        return back()->withErrors(['Las credenciales son incorrectas.']);
     }
 }

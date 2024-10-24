@@ -9,7 +9,7 @@ Route::get('/', function () {
     // Si el usuario ha iniciado sesión
     if (Auth::check()) {
         // Si es administrador, redirige a la vista de gestión de usuarios
-        if (Auth::user()->role === 'Admin') {
+        if (Auth::user()->role === 'admin') {
             return redirect()->route('users.index');  // Vista de admin
         }
 

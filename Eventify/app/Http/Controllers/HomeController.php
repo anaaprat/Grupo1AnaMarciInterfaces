@@ -3,37 +3,32 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Auth;
+use Illuminate\Support\Facades\Auth; // Importar Auth correctamente
 
 class HomeController extends Controller
 {
     /**
-     * Create a new controller instance.
+     * Crear una nueva instancia del controlador.
      *
      * @return void
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth'); // Solo usuarios autenticados pueden acceder
     }
 
     /**
-     * Show the application dashboard.
+     * Mostrar el dashboard de la aplicación según el rol del usuario.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Support\Renderable
      */
     public function index()
     {
-        return view('home');
-    }
-
-    protected function redirectTo()
-    {
+        // Redirigir según el rol del usuario autenticado
         if (Auth::user()->role === 'Admin') {
-            return route('users.index');  // Vista de admin
+            return redirect()->route('admin.dashboard'); // Redirigir al dashboard de admin
         }
 
-        return route('user.dashboard');  // Vista de usuario regular
+        return redirect()->route('users.dashboard'); // Redirigir al dashboard de usuario regular
     }
-
 }
