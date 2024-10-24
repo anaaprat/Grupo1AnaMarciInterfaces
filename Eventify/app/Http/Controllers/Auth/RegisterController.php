@@ -7,8 +7,8 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Controllers\Auth\Auth;
-use App\Http\Controllers\Auth\Request;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 
 class RegisterController extends Controller
