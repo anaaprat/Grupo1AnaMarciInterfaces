@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Http\Controllers\Auth;
 
 class UserController extends Controller
 {
@@ -15,6 +16,33 @@ class UserController extends Controller
         $users = User::all();
         return view('users.index', compact('users'));
     }
+
+    public function login(Request $request)
+{
+    // Validar las credenciales del usuario
+    $credentials = $request->only('email', 'password');
+
+    // Intentar autenticar al usuario
+    if (Auth::attempt($credentials)) {
+        $user = Auth::user();
+        
+        // Verificar si el usuario está activo
+        if ($user->is_active) {
+            // Redirigir según el rol del usuario
+            if ($user->role === 'Admin') {
+                return redirect()->route('admin.index'); // Redirigir a index para admin
+            } else if ($user->role === 'User') {
+                return redirect()->route('users.dashboard'); // Redirigir al dashboard para usuarios
+            }
+        } else {
+            Auth::logout();
+            return back()->withErrors(['Su cuenta no está activa.']);
+        }
+    }
+
+    return back()->withErrors(['Las credenciales son incorrectas.']);
+}
+
 
     /**
      * Show the form for creating a new resource.
