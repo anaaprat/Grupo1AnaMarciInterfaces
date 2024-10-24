@@ -18,8 +18,8 @@ class DatabaseSeeder extends Seeder
             'name' => 'admin',
             'email' => 'admin@admin.com',
             'password' => '12345678',
-            'activated' => 'true',
-            'email_confirmed' => 'true',
+            'actived' => 1,
+            'email_confirmed' => 1,
             'role' => 'admin',
         ]);
     }

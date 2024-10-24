@@ -4,29 +4,23 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Http\Request; // Importar correctamente Request
-use Illuminate\Support\Facades\Auth; // Importar correctamente Auth
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | Este controlador maneja la autenticación de usuarios para la aplicación y
-    | redirige a la pantalla principal después del login.
-    |
-    */
-
     use AuthenticatesUsers;
 
     /**
      * Redirección después del login.
      *
-     * @var string
+     * @return string
      */
-    protected $redirectTo = '/dashboard'; // Cambia esto según dónde quieras redirigir
+    protected function redirectTo()
+    {
+        // Redirige según el tipo de usuario (admin o usuario regular)
+        return auth()->user()->role === 'admin' ? route('users.index') : route('users.dashboard');
+    }
 
     /**
      * Crear una nueva instancia del controlador.
@@ -35,7 +29,8 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout'); // No es necesario middleware 'auth' para logout
+        // Permite que solo usuarios no autenticados vean el formulario de login
+        $this->middleware('guest')->except('logout');
     }
 
     /**
@@ -45,7 +40,7 @@ class LoginController extends Controller
      */
     public function showLoginForm()
     {
-        return view('auth.login'); // Asegúrate de tener esta vista en resources/views/auth/login.blade.php
+        return view('auth.login');
     }
 
     /**
@@ -62,24 +57,31 @@ class LoginController extends Controller
         // Intentar autenticar al usuario
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            // Verificar si el usuario está activo
-            if ($user->is_active) {
-                return redirect()->intended($this->redirectTo); // Redirigir al dashboard u otra ruta
+            // Verificar si el usuario está activo (usamos el campo 'actived')
+            if ($user->actived) {
+                return redirect()->intended($this->redirectTo()); // Redirige al destino según el tipo de usuario
             } else {
                 Auth::logout();
-                return back()->withErrors(['Su cuenta no está activa.']); // Error si la cuenta no está activa
+                return back()->withErrors(['Su cuenta no está activa.']); // Mensaje si la cuenta no está activa
             }
         }
 
-        // Credenciales inválidas
+        // Si las credenciales son incorrectas
         return back()->withErrors(['Las credenciales son incorrectas.']);
     }
 
+    /**
+     * Verificar si el usuario está activo después de autenticarse.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\RedirectResponse
+     */
     protected function authenticated(Request $request, $user)
     {
-        if (!$user->is_active) {
+        if (!$user->actived) {  // Verificamos si la cuenta está activa usando 'actived'
             Auth::logout();
-            return redirect('/login')->with('error', 'Tu cuenta aún no ha sido activada por el administrador.');
+            return redirect('/login')->withErrors(['Tu cuenta aún no ha sido activada por el administrador.']);
         }
 
         return redirect()->intended($this->redirectPath());

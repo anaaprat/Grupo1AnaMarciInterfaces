@@ -25,8 +25,8 @@ class HomeController extends Controller
     public function index()
     {
         // Redirigir según el rol del usuario autenticado
-        if (Auth::user()->role === 'Admin') {
-            return redirect()->route('admin.dashboard'); // Redirigir al dashboard de admin
+        if (Auth::user()->role === 'admin') {
+            return redirect()->route('users.index'); // Redirigir al dashboard de admin
         }
 
         return redirect()->route('users.dashboard'); // Redirigir al dashboard de usuario regular

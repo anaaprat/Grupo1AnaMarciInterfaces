@@ -4,13 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Http\Controllers\Schema;
-
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Mostrar listado de usuarios.
      */
     public function index()
     {
@@ -19,7 +18,7 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Mostrar el formulario para crear un nuevo usuario (pendiente de implementación).
      */
     public function create()
     {
@@ -27,7 +26,7 @@ class UserController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Almacenar un nuevo usuario en la base de datos (pendiente de implementación).
      */
     public function store(Request $request)
     {
@@ -35,18 +34,16 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Mostrar un usuario específico.
      */
     public function show($id)
     {
-        $user = User::findOrFail($id); // Encuentra al usuario por su ID o lanza un error 404
-        return view('users.show', compact('user')); // Pasa los datos del usuario a la vista
+        $user = User::findOrFail($id);
+        return view('users.show', compact('user'));
     }
 
-
-
     /**
-     * Show the form for editing the specified resource.
+     * Mostrar el formulario para editar un usuario específico.
      */
     public function edit($id)
     {
@@ -55,7 +52,7 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Actualizar los datos de un usuario en la base de datos.
      */
     public function update(Request $request, $id)
     {
@@ -64,8 +61,10 @@ class UserController extends Controller
         // Validar los datos del formulario
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
+            'email' => ['required', 'email', Rule::unique('users')->ignore($user->id)],
             'role' => 'required|string',
+            'profile_picture' => 'nullable|string|max:255',
+            'actived' => 'required|boolean',
         ]);
 
         // Actualizar los datos del usuario
@@ -75,24 +74,14 @@ class UserController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Eliminar (soft delete) un usuario específico.
      */
     public function destroy($id)
     {
         $user = User::findOrFail($id);
-        $user->deleted = 1; // Marcamos el usuario como eliminado
+        $user->deleted = 1; // Marcamos al usuario como eliminado
         $user->save();
 
         return redirect()->route('users.index')->with('success', 'Usuario eliminado correctamente.');
     }
-
-    public function up()
-{
-    Schema::table('users', function (Blueprint $table) {
-        $table->boolean('is_active')->default(false);
-    });
-}
-
-
-    
 }

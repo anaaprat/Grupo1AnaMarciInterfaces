@@ -16,7 +16,7 @@ Route::get('/', function () {
         }
 
         // Si es un usuario regular, redirige a la vista principal para todos los usuarios
-        return redirect()->route('user.dashboard');  // Redirige al dashboard del usuario
+        return redirect()->route('users.dashboard');  // Redirige al dashboard del usuario
     }
 
     // Si no ha iniciado sesión, mostrar la página de login
@@ -32,8 +32,8 @@ Route::get('/register', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     // Ruta para el dashboard de usuarios regulares
     Route::get('/dashboard', function () {
-        return view('user.dashboard');  // Vista para usuarios regulares
-    })->name('user.dashboard');
+        return view('users.dashboard');  // Vista para usuarios regulares
+    })->name('users.dashboard');
 
     // Ruta protegida que requiere verificación de email
     Route::get('/home', [HomeController::class, 'index'])->name('home');
