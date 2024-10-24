@@ -74,4 +74,14 @@ class LoginController extends Controller
         // Credenciales inválidas
         return back()->withErrors(['Las credenciales son incorrectas.']);
     }
+
+    protected function authenticated(Request $request, $user)
+    {
+        if (!$user->is_active) {
+            Auth::logout();
+            return redirect('/login')->with('error', 'Tu cuenta aún no ha sido activada por el administrador.');
+        }
+
+        return redirect()->intended($this->redirectPath());
+    }
 }

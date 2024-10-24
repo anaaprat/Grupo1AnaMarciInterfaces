@@ -27,6 +27,10 @@ class VerificationController extends Controller
      */
     protected $redirectTo = '/home';
 
+    protected function redirectTo()
+    {
+        return '/email-verified';
+    }
     /**
      * Create a new controller instance.
      *
