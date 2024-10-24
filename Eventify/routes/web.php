@@ -2,37 +2,44 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;  // Asegúrate de importar Auth
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Aquí es donde puedes registrar las rutas web para tu aplicación.
-|
-*/
-
-// Rutas de autenticación (login)
-Route::get('/login', [UserController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [UserController::class, 'login']);
-
-// Rutas protegidas para usuarios autenticados
-Route::middleware(['auth'])->group(function () {
-    // Ruta para usuarios regulares
-    Route::get('/dashboard', [UserController::class, 'dashboard'])->name('users.dashboard');
-
-    // Ruta para administradores
-    Route::get('/admin/index', function () {
-        return view('admin.index'); // Asegúrate de tener esta vista
-    })->name('admin.index');
-});
-
-// Redirigir temporalmente la raíz a la página de login
+// Ruta raíz
 Route::get('/', function () {
-    return redirect('/login');
+    // Si el usuario ha iniciado sesión
+    if (Auth::check()) {
+        // Si es administrador, redirige a la vista de gestión de usuarios
+        if (Auth::user()->role === 'admin') {
+            return redirect()->route('users.index');  // Vista de admin
+        }
+
+        // Si es un usuario regular, redirige a la vista principal para todos los usuarios
+        return redirect()->route('user.dashboard');  // Redirige al dashboard del usuario
+    }
+
+    // Si no ha iniciado sesión, mostrar la página de login
+    return view('auth.login');
 });
 
-// Redirigir si no encuentra una ruta específica
-Route::fallback(function () {
-    return redirect('/');
+Route::middleware(['auth', 'verified'])->get('/home', [HomeController::class, 'index'])->name('home');
+
+
+// Middleware para usuarios autenticados
+Route::middleware('auth')->group(function () {
+    // Ruta para el dashboard de usuarios regulares
+    Route::get('/dashboard', function () {
+        return view('user.dashboard');  // Vista para usuarios regulares
+    })->name('user.dashboard');
+
+    // Ruta para la gestión de usuarios, solo accesible para admin
+    Route::get('/users', [UserController::class, 'index'])->name('users.index')->middleware('admin');
+    
+    // Otras rutas protegidas
+    Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+    Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
+    Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
 });
+
+// Rutas de autenticación (login, registro, etc.)
+Auth::routes();
