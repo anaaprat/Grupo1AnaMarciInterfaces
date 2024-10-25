@@ -19,7 +19,9 @@ class LoginController extends Controller
     protected function redirectTo()
     {
         // Redirige según el tipo de usuario (admin o usuario regular)
-        return auth()->user()->role === 'admin' ? route('users.index') : route('users.dashboard');
+        $user = Auth()->user();
+
+        return $user->role === 'admin' ? '/users' : '/';
     }
 
     /**
@@ -49,26 +51,7 @@ class LoginController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function login(Request $request)
-    {
-        // Validar las credenciales del usuario
-        $credentials = $request->only('email', 'password');
 
-        // Intentar autenticar al usuario
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-            // Verificar si el usuario está activo (usamos el campo 'actived')
-            if ($user->actived) {
-                return redirect()->intended($this->redirectTo()); // Redirige al destino según el tipo de usuario
-            } else {
-                Auth::logout();
-                return back()->withErrors(['Su cuenta no está activa.']); // Mensaje si la cuenta no está activa
-            }
-        }
-
-        // Si las credenciales son incorrectas
-        return back()->withErrors(['Las credenciales son incorrectas.']);
-    }
 
     /**
      * Verificar si el usuario está activo después de autenticarse.

@@ -23,6 +23,8 @@ Route::get('/', function () {
     return view('auth.login');
 })->name('login');
 
+Route::resource('users', UserController::class)->middleware('auth');
+
 // Ruta de registro
 Route::get('/register', function () {
     return view('auth.register');
