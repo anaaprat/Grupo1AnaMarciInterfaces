@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Events\Registered;
 
 
 class RegisterController extends Controller
@@ -66,19 +67,30 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        // Crear un nuevo usuario, inicialmente no activado y con rol de usuario
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'role' => 'User',
+            'actived' => false,
+            'email_confirmed' => false,
         ]);
     }
-
+    /**
+     * @param  Request  $request
+     * @param  User  $user
+     * @return \Illuminate\Http\Response
+     */
     protected function registered(Request $request, $user)
     {
-        // Deslogea al usuario inmediatamente después del registro
+        // Desloguear al usuario inmediatamente después del registro
         Auth::logout();
 
-        // Redirecciona a una vista que indique que revise su correo
-        return redirect('/verify-email');
+        // Enviar el correo de verificación (esto se maneja automáticamente si has configurado las rutas de verificación)
+        event(new Registered($user));
+
+        // Redirigir a la vista que indica que se debe revisar el correo
+        //return redirect('/verify-email'); // Crea esta ruta y vista
     }
 }
