@@ -51,11 +51,13 @@ class UserController extends Controller
         return view('users.edit', compact('user'));
     }
 
+
     /**
      * Actualizar los datos de un usuario en la base de datos.
      */
     public function update(Request $request, $id)
     {
+        // Buscar el usuario por ID
         $user = User::findOrFail($id);
 
         // Validar los datos del formulario
@@ -70,6 +72,7 @@ class UserController extends Controller
         // Actualizar los datos del usuario
         $user->update($request->all());
 
+        // Redirigir al índice de usuarios con un mensaje de éxito
         return redirect()->route('users.index')->with('success', 'Usuario actualizado correctamente.');
     }
 
@@ -79,9 +82,9 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
-        $user->deleted = 1; // Marcamos al usuario como eliminado
-        $user->save();
-
+        $user->delete();
+    
         return redirect()->route('users.index')->with('success', 'Usuario eliminado correctamente.');
     }
+    
 }

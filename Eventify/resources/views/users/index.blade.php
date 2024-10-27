@@ -76,11 +76,19 @@
                         <button onclick="window.location.href='{{ route('users.edit', $user->id) }}'">
                             <i class="fas fa-edit"></i>
                         </button>
-
                     </td>
                 </tr>
             @endforeach
         </tbody>
+        <div>
+            <!-- Otros elementos de la vista -->
+
+            <!-- Botón de Logout -->
+            <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+                @csrf
+                <button type="submit" class="btn btn-danger">Log Out</button>
+            </form>
+        </div>
     </table>
 </body>
 
