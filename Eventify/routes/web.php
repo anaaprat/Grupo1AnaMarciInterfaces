@@ -36,6 +36,8 @@ Route::get('/email/verify', [VerificationController::class, 'show'])
     ->middleware('auth')
     ->name('verification.notice');
 
+Route::get('/email/verified', [VerificationController::class, 'verified'])->name('verification.verified');
+
 // Enlace de verificación de correo electrónico
 Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
     ->middleware(['auth', 'signed'])->name('verification.verify');

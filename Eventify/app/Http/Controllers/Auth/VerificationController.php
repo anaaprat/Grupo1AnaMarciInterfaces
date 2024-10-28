@@ -22,8 +22,9 @@ class VerificationController extends Controller
     |
     */
 
-    public function show(){
-        return view ("auth.verify");
+    public function show()
+    {
+        return view("auth.verify");
     }
 
     use VerifiesEmails;
@@ -36,7 +37,7 @@ class VerificationController extends Controller
 
     protected function redirectTo()
     {
-        return 'verification.verify';
+        return 'emailverified';
     }
     /**
      * Create a new controller instance.
@@ -54,12 +55,17 @@ class VerificationController extends Controller
     {
         $request->fulfill();
         $user = $request->user();
-        $user->email_confirmed = 1;
+        $user->markEmailAsVerified();
+        $user->email_confirmed = true;
         $user->save();
-        
-        return redirect($this->redirectTo());
 
-        
+        return redirect()->route('verification.verified')->with('verified', true);
+
+
     }
-    
+
+    public function emailVerified()
+    {
+        return view('auth.emailverified');
+    }
 }

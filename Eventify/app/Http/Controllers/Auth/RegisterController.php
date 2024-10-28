@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Events\Registered;
-
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VerificationEmail;
 
 class RegisterController extends Controller
 {
@@ -87,11 +88,10 @@ class RegisterController extends Controller
         // Desloguear al usuario inmediatamente después del registro
         Auth::logout();
 
-        // Enviar el correo de verificación
-        event(new Registered($user));
+        // Enviar el correo de verificación usando el Mailable
+        Mail::to($user->email)->send(new VerificationEmail($user));
 
         // Redirigir a la vista que indica que se debe revisar el correo
         return redirect()->route('verification.notice');
-
     }
 }
