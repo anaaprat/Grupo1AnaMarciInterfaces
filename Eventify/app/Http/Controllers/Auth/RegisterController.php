@@ -92,6 +92,6 @@ class RegisterController extends Controller
         Mail::to($user->email)->send(new VerificationEmail($user));
 
         // Redirigir a la vista que indica que se debe revisar el correo
-        return redirect()->route('verification.notice');
+        return view('auth.verify');
     }
 }

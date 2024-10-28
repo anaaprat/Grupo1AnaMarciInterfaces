@@ -47,4 +47,13 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_confirmed' => 'boolean',
         'password' => 'hashed',
     ];
+
+    // En User model
+    public function markEmailAsVerified()
+    {
+        $this->email_verified_at = now();
+        $this->email_confirmed = true;  // Actualiza el campo a true
+        $this->save();
+    }
+
 }
