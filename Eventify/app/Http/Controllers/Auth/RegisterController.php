@@ -85,13 +85,8 @@ class RegisterController extends Controller
      */
     protected function registered(Request $request, $user)
     {
-        // Desloguear al usuario inmediatamente después del registro
         Auth::logout();
-
-        // Enviar el correo de verificación usando el Mailable
         Mail::to($user->email)->send(new VerificationEmail($user));
-
-        // Redirigir a la vista que indica que se debe revisar el correo
-        return view('auth.verify');
+        return redirect()->route('verification.notice');
     }
 }
