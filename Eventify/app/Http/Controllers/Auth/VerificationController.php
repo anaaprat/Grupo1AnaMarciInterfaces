@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\VerifiesEmails;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class VerificationController extends Controller
 {
@@ -19,6 +21,10 @@ class VerificationController extends Controller
     | be re-sent if the user didn't receive the original email message.
     |
     */
+
+    public function show(){
+        return view ("auth.verify");
+    }
 
     use VerifiesEmails;
 
@@ -45,14 +51,16 @@ class VerificationController extends Controller
         $this->middleware('throttle:6,1')->only('verify', 'resend');
     }
 
-    public function verifyEmail($userId)
+    public function verify(EmailVerificationRequest $request)
     {
-        $user = User::findOrFail($userId);
-
+        $request->fulfill();
+        $user = $request->user();
         $user->email_confirmed = 1;
         $user->save();
-
         // Redirigir a la vista de espera
-        return redirect('/wait');
+        return redirect('/emailverified');
+
+        
     }
+    
 }

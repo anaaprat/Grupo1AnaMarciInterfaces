@@ -8,28 +8,18 @@ use App\Http\Controllers\Auth\VerificationController;
 
 // Ruta raíz
 Route::get('/', function () {
-    // Si el usuario ha iniciado sesión
     if (Auth::check()) {
-        // Si es administrador, redirige a la vista de gestión de usuarios
         if (Auth::user()->role === 'admin') {
-            return redirect()->route('users.index');  // Vista de admin
+            return redirect()->route('users.index');
         }
-
-        // Si es un usuario regular, redirige a la vista principal para todos los usuarios
-        return redirect()->route('users.dashboard');  // Redirige al dashboard del usuario
+        return redirect()->route('users.dashboard');
     }
-
-    // Si no ha iniciado sesión, mostrar la página de login
     return view('auth.login');
-})->name('login');
+})->name('login'); 
 
 Route::resource('users', UserController::class)->middleware('auth');
 
-// Ruta de registro
-Route::get('/register', function () {
-    return view('auth.register');
-})->name('register');
-
+Auth::routes();
 // Middleware para usuarios autenticados y verificados
 Route::middleware(['auth', 'verified'])->group(function () {
     // Ruta para el dashboard de usuarios regulares
@@ -41,43 +31,26 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 });
 
-// Rutas de autenticación con verificación de email activada
-Auth::routes(['verify' => true]);
+// Ruta de verificación de email (GET)
+Route::get('/email/verify', [VerificationController::class, 'show'])->middleware('auth')
+    ->name('verification.notice');
 
-// Agrupamos las rutas que requieren autenticación
-Route::middleware('auth')->group(function () {
+// Ruta para manejar el enlace de verificación de correo electrónico (GET)
+Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
+    ->middleware(['signed', 'auth']) // Solo esta ruta requiere el middleware 'signed'
+    ->name('verification.verify');
 
-    // Ruta de verificación de email (GET)
-    Route::get('/email/verify', function () {
-        return view('auth.verify-email');
-    })->name('verification.notice');
+// Ruta de reenvío de verificación de email (POST) con limitación de reintentos
+Route::post('/email/resend', [VerificationController::class, 'resend'])
+    ->middleware('throttle:6,1') // Solo esta ruta necesita 'throttle'
+    ->name('verification.resend');
 
-    // Ruta para manejar el enlace de verificación de correo electrónico (GET)
-    Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
-        ->middleware('signed') // Solo esta ruta requiere el middleware 'signed'
-        ->name('verification.verify');
 
-    // Ruta de reenvío de verificación de email (POST) con limitación de reintentos
-    Route::post('/email/resend', [VerificationController::class, 'resend'])
-        ->middleware('throttle:6,1') // Solo esta ruta necesita 'throttle'
-        ->name('verification.resend');
-});
+//Admin
+Route::get('/users', action: [UserController::class, 'index'])->name('users.index')->middleware('role:admin');
+Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show')->middleware('role:admin');
+Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy')->middleware('role:admin');
+Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit')->middleware('role:admin');
+Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update')->middleware('role:admin');
 
-// Ruta para la gestión de usuarios, solo accesible para admin
-Route::middleware('admin')->group(function () {
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
-    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
-    Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
-    Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
-});
 
-Route::get('/confirmation', function () {
-    return view('users.confirmation');
-})->name('confirmation');
-
-Route::get('/wait', function () {
-    return view('users.wait');
-})->name('wait');
-// Rutas de autenticación (login, registro, etc.)
-Auth::routes();

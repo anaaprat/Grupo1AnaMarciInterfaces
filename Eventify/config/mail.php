@@ -45,17 +45,6 @@ return [
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
         ],
 
-        'mailpit' => [ // Añadido mailer para Mailpit
-            'transport' => 'smtp',
-            'host' => env('MAIL_HOST', '127.0.0.1'), // Asegúrate de que esté apuntando a Mailpit
-            'port' => env('MAIL_PORT', 1025), // Puerto de Mailpit
-            'encryption' => env('MAIL_ENCRYPTION', null), // Sin cifrado
-            'username' => env('MAIL_USERNAME', null), // Usuario nulo
-            'password' => env('MAIL_PASSWORD', null), // Contraseña nula
-            'timeout' => null,
-            'local_domain' => env('MAIL_EHLO_DOMAIN'),
-        ],
-
         'ses' => [
             'transport' => 'ses',
         ],
