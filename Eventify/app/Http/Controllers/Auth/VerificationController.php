@@ -37,7 +37,7 @@ class VerificationController extends Controller
 
     protected function redirectTo()
     {
-        return 'emailverified';
+        return view ('auth.emailverified');
     }
     /**
      * Create a new controller instance.
