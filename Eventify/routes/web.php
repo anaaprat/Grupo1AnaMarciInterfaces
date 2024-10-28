@@ -15,7 +15,7 @@ Route::get('/', function () {
         return redirect()->route('users.dashboard');
     }
     return view('auth.login');
-})->name('login'); 
+})->name('login');
 
 Route::resource('users', UserController::class)->middleware('auth');
 
@@ -31,20 +31,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 });
 
-// Ruta de verificación de email (GET)
-Route::get('/email/verify', [VerificationController::class, 'show'])->middleware('auth')
+// Notificación de verificación de email
+Route::get('/email/verify', [VerificationController::class, 'show'])
+    ->middleware('auth')
     ->name('verification.notice');
 
-// Ruta para manejar el enlace de verificación de correo electrónico (GET)
+// Enlace de verificación de correo electrónico
 Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
-    ->middleware(['signed', 'auth']) // Solo esta ruta requiere el middleware 'signed'
-    ->name('verification.verify');
+    ->middleware(['auth', 'signed'])->name('verification.verify');
 
-// Ruta de reenvío de verificación de email (POST) con limitación de reintentos
+// Reenvío de verificación de email
 Route::post('/email/resend', [VerificationController::class, 'resend'])
-    ->middleware('throttle:6,1') // Solo esta ruta necesita 'throttle'
-    ->name('verification.resend');
-
+    ->middleware(['auth', 'throttle:6,1'])->name('verification.resend');
 
 //Admin
 Route::get('/users', action: [UserController::class, 'index'])->name('users.index')->middleware('role:admin');

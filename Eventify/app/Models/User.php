@@ -24,6 +24,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'role',          // Añadir el campo 'role'
         'actived',       // Añadir el campo 'actived'
+        'email_confirmed'
     ];
 
     /**
@@ -43,6 +44,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'email_confirmed' => 'boolean',
         'password' => 'hashed',
     ];
 }

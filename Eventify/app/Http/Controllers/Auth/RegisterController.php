@@ -91,6 +91,7 @@ class RegisterController extends Controller
         event(new Registered($user));
 
         // Redirigir a la vista que indica que se debe revisar el correo
-        return redirect('/verify');
+        return redirect()->route('verification.notice');
+
     }
 }

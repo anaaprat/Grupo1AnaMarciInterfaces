@@ -33,11 +33,10 @@ class VerificationController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
 
     protected function redirectTo()
     {
-        return '/email-verified';
+        return 'verification.verify';
     }
     /**
      * Create a new controller instance.
@@ -57,8 +56,8 @@ class VerificationController extends Controller
         $user = $request->user();
         $user->email_confirmed = 1;
         $user->save();
-        // Redirigir a la vista de espera
-        return redirect('/emailverified');
+        
+        return redirect($this->redirectTo());
 
         
     }
