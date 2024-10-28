@@ -55,7 +55,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:5', 'confirmed'],
         ]);
     }
 
@@ -80,17 +80,17 @@ class RegisterController extends Controller
     /**
      * @param  Request  $request
      * @param  User  $user
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     protected function registered(Request $request, $user)
     {
         // Desloguear al usuario inmediatamente después del registro
         Auth::logout();
 
-        // Enviar el correo de verificación (esto se maneja automáticamente si has configurado las rutas de verificación)
+        // Enviar el correo de verificación
         event(new Registered($user));
 
         // Redirigir a la vista que indica que se debe revisar el correo
-        //return redirect('/verify-email'); // Crea esta ruta y vista
+        return redirect('/confirmation');
     }
 }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\VerifiesEmails;
+use App\Models\User;
+use Illuminate\Http\Request;
 
 class VerificationController extends Controller
 {
@@ -41,5 +43,16 @@ class VerificationController extends Controller
         $this->middleware('auth');
         $this->middleware('signed')->only('verify');
         $this->middleware('throttle:6,1')->only('verify', 'resend');
+    }
+
+    public function verifyEmail($userId)
+    {
+        $user = User::findOrFail($userId);
+
+        $user->email_confirmed = 1;
+        $user->save();
+
+        // Redirigir a la vista de espera
+        return redirect('/wait');
     }
 }

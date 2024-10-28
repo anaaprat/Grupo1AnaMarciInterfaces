@@ -72,5 +72,12 @@ Route::middleware('admin')->group(function () {
     Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
 });
 
+Route::get('/confirmation', function () {
+    return view('users.confirmation');
+})->name('confirmation');
+
+Route::get('/wait', function () {
+    return view('users.wait');
+})->name('wait');
 // Rutas de autenticación (login, registro, etc.)
 Auth::routes();
