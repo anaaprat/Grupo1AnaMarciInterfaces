@@ -17,7 +17,8 @@ Route::get('/', function () {
     return view('auth.login');
 })->name('login');
 
-Route::resource('users', UserController::class)->middleware('auth');
+Route::get('/users', [UserController::class, 'index'])->name('users.index')->middleware('role:admin');
+
 
 Auth::routes();
 // Middleware para usuarios autenticados y verificados
@@ -37,10 +38,9 @@ Route::get('/email/verify', [VerificationController::class, 'show'])
     ->name('verification.notice');
 
 // Enlace de verificación de correo electrónico
-Route::get('/email/verified', [VerificationController::class, 'verify'])
-    ->middleware('signed')
+Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
+    ->middleware(['signed', 'auth'])
     ->name('verification.verify');
-    
 
 // Reenvío de verificación de email
 Route::post('/email/resend', [VerificationController::class, 'resend'])
