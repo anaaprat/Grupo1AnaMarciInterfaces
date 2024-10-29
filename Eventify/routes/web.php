@@ -33,14 +33,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 // Notificación de verificación de email
 Route::get('/email/verify', [VerificationController::class, 'show'])
-    ->middleware('auth')
+    ->middleware('auth', 'role:User')
     ->name('verification.notice');
 
-Route::get('/email/verified', [VerificationController::class, 'verified'])->name('verification.verified');
-
 // Enlace de verificación de correo electrónico
-Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
-    ->middleware(['auth', 'signed'])->name('verification.verify');
+Route::get('/email/verified', [VerificationController::class, 'verify'])
+    ->middleware('signed')
+    ->name('verification.verify');
+    
 
 // Reenvío de verificación de email
 Route::post('/email/resend', [VerificationController::class, 'resend'])

@@ -55,17 +55,11 @@ class VerificationController extends Controller
     {
         $request->fulfill();
         $user = $request->user();
-        $user->markEmailAsVerified();
-        $user->email_confirmed = true;
-        $user->save();
-
-        return redirect()->route('verification.verified')->with('verified', true);
-
-
-    }
-
-    public function emailVerified()
-    {
+        if (!$user->hasVerifiedEmail()) {
+            $user->email_confirmed = 1; 
+            $user->email_verified_at = now();
+            $user->save();
+        }
         return view('auth.emailverified');
     }
 }

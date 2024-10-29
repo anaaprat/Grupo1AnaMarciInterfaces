@@ -22,8 +22,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
-        'role',          // Añadir el campo 'role'
-        'actived',       // Añadir el campo 'actived'
+        'role',         
+        'actived',       
         'email_confirmed'
     ];
 
