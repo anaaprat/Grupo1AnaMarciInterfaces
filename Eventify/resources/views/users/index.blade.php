@@ -7,16 +7,38 @@
     <title>Manage Users</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        body {
+            background: linear-gradient(135deg, #8b5cf6, #a78bfa); /* Fondo más oscuro */
+            color: white;
+            font-family: 'Roboto', sans-serif;
+            padding: 20px;
+            position: relative; /* Para posicionar el botón de Log Out */
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden; /* Para que las esquinas sean redondeadas */
         }
 
         th,
         td {
-            padding: 10px;
+            padding: 15px;
             text-align: left;
             border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
         }
 
         .manage-buttons button {
@@ -28,12 +50,37 @@
         .manage-buttons i {
             font-size: 18px;
             margin-right: 10px;
+            color: white; /* Color de los iconos */
+        }
+
+        .btn-danger {
+            background-color: #e63946;
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            cursor: pointer;
+            position: absolute; /* Para que esté en la esquina superior izquierda */
+            top: 20px; /* Espaciado desde la parte superior */
+            left: 20px; /* Espaciado desde la izquierda */
+        }
+
+        .btn-danger:hover {
+            background-color: #d62839;
         }
     </style>
 </head>
 
 <body>
     <h1>Manage Users</h1>
+
+    <!-- Botón de Logout en la esquina superior izquierda -->
+    <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+        @csrf
+        <button type="submit" class="btn btn-danger">Log Out</button>
+    </form>
+
     <table>
         <thead>
             <tr>
@@ -67,8 +114,7 @@
                         <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit"
-                                onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?')">
+                            <button type="submit" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?')">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </form>
@@ -80,15 +126,6 @@
                 </tr>
             @endforeach
         </tbody>
-        <div>
-            <!-- Otros elementos de la vista -->
-
-            <!-- Botón de Logout -->
-            <form action="{{ route('logout') }}" method="POST" style="display: inline;">
-                @csrf
-                <button type="submit" class="btn btn-danger">Log Out</button>
-            </form>
-        </div>
     </table>
 </body>
 

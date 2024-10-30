@@ -6,38 +6,31 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class LoginController extends Controller
 {
     use AuthenticatesUsers;
 
     /**
-     * Redirección después del login.
-     *
      * @return string
      */
     protected function redirectTo()
     {
-        // Redirige según el tipo de usuario (admin o usuario regular)
-        $user = Auth()->user();
+        $user = Auth::user();
 
         return $user->role === 'admin' ? '/users' : '/';
     }
 
-    /**
-     * Crear una nueva instancia del controlador.
-     *
+    /**     
      * @return void
      */
     public function __construct()
     {
-        // Permite que solo usuarios no autenticados vean el formulario de login
         $this->middleware('guest')->except('logout');
     }
 
-    /**
-     * Mostrar el formulario de login.
-     *
+    /**     
      * @return \Illuminate\View\View
      */
     public function showLoginForm()
@@ -46,15 +39,39 @@ class LoginController extends Controller
     }
 
     /**
-     * Manejar el login de usuarios.
-     *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
 
+        $user = User::where('email', $credentials['email'])->first();
+
+        if (!$user) {
+            return redirect()->back()->withErrors(['error' => 'This account doesn´t exist.']);
+        }
+
+        if (!$user->email_confirmed) {
+            return redirect()->back()->withErrors(['error' => 'This account hasn´t been confirmed yet.']);
+        }
+
+        if (!$user->actived) {
+            return redirect()->back()->withErrors(['error' => 'This account hasn´t been activated by the administrator, please wait.']);
+        }
+
+        if ($user->deleted) {
+            return redirect()->back()->withErrors(['error' => 'This account has been eliminated']);
+        }
+
+        if (Auth::attempt($credentials)) {
+            return $this->sendLoginResponse($request);
+        }
+
+        return redirect()->back()->withErrors(['error' => 'The credentials are incorrect.']);
+    }
 
     /**
-     * Verificar si el usuario está activo después de autenticarse.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\User  $user
@@ -62,9 +79,9 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-        if (!$user->actived) {  // Verificamos si la cuenta está activa usando 'actived'
+        if (!$user->actived) { // Verificamos si la cuenta está activa usando 'actived'
             Auth::logout();
-            return redirect('/login')->withErrors(['Tu cuenta aún no ha sido activada por el administrador.']);
+            return redirect()->route('emailverified')->withErrors(['error' => 'Tu cuenta aún no ha sido activada por el administrador.']);
         }
 
         return redirect()->intended($this->redirectPath());

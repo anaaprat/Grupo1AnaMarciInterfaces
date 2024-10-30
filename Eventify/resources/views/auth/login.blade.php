@@ -5,9 +5,19 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
+                <div class="card-header text-center">{{ __('Login') }}</div>
 
                 <div class="card-body">
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
@@ -44,7 +54,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
 
-                                    <label class="form-check-label" for="remember">
+                                    <label class="form-check-label" for="remember" style="color: black;">
                                         {{ __('Remember Me') }}
                                     </label>
                                 </div>
@@ -53,12 +63,12 @@
 
                         <div class="row mb-0">
                             <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary btn-lg">
                                     {{ __('Login') }}
                                 </button>
 
                                 @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
+                                    <a class="btn btn-link" href="{{ route('password.request') }}" style="color: black;">
                                         {{ __('Forgot Your Password?') }}
                                     </a>
                                 @endif
@@ -70,4 +80,31 @@
         </div>
     </div>
 </div>
-@endsection
+@endsection  
+
+<style>
+    body {
+        background: linear-gradient(135deg, #a78bfa, #d6bcfa);
+        color: white;
+        font-family: 'Roboto', sans-serif;
+    }
+    .card {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+    .card-header {
+        font-size: 1.5rem;
+        color: #fff;
+        background: transparent;
+        border: none;
+    }
+    .form-check-label {
+        color: black; /* Color negro para la etiqueta de "Recuerdame" */
+    }
+    .alert {
+        background-color: rgba(255, 0, 0, 0.1); 
+        border-color: rgba(255, 0, 0, 0.3); 
+        color: #fff; 
+    }
+</style>

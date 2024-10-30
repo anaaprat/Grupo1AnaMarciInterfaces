@@ -29,7 +29,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('users.dashboard');
 
     // Ruta protegida que requiere verificación de email
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->middleware('verified');
 });
 
 // Notificación de verificación de email

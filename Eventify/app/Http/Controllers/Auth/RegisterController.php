@@ -86,7 +86,7 @@ class RegisterController extends Controller
     protected function registered(Request $request, $user)
     {
        
-        Mail::to($user->email)->send(new VerificationEmail($user));
+       // Mail::to($user->email)->send(new VerificationEmail($user));
         return redirect()->route('verification.notice');
     }
 }
