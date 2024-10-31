@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
             'password' => '12345678',
             'actived' => 1,
             'email_confirmed' => 1,
-            'role' => 'admin',
+            'role' => 'a',
         ]);
     }
 }

@@ -9,7 +9,6 @@ use Illuminate\Validation\Rule;
 class UserController extends Controller
 {
     /**
-     * Mostrar listado de usuarios.
      */
     public function index()
     {
@@ -17,34 +16,26 @@ class UserController extends Controller
         return view('users.index', compact('users'));
     }
 
-    /**
-     * Mostrar el formulario para crear un nuevo usuario (pendiente de implementación).
-     */
+    
     public function create()
     {
         //
     }
 
-    /**
-     * Almacenar un nuevo usuario en la base de datos (pendiente de implementación).
-     */
+   
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Mostrar un usuario específico.
-     */
+   
     public function show($id)
     {
         $user = User::findOrFail($id);
         return view('users.show', compact('user'));
     }
 
-    /**
-     * Mostrar el formulario para editar un usuario específico.
-     */
+    
     public function edit($id)
     {
         $user = User::findOrFail($id);
@@ -52,15 +43,11 @@ class UserController extends Controller
     }
 
 
-    /**
-     * Actualizar los datos de un usuario en la base de datos.
-     */
+    
     public function update(Request $request, $id)
     {
-        // Buscar el usuario por ID
         $user = User::findOrFail($id);
 
-        // Validar los datos del formulario
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => ['required', 'email', Rule::unique('users')->ignore($user->id)],
@@ -69,15 +56,12 @@ class UserController extends Controller
             'actived' => 'required|boolean',
         ]);
 
-        // Actualizar los datos del usuario
         $user->update($request->all());
 
-        // Redirigir al índice de usuarios con un mensaje de éxito
-        return redirect()->route('users.index')->with('success', 'Usuario actualizado correctamente.');
+        return redirect()->route('users.index')->with('success', 'This user has been updated successfully.');
     }
 
     /**
-     * Eliminar (soft delete) un usuario específico.
      */
     public function destroy($id)
     {
@@ -85,7 +69,7 @@ class UserController extends Controller
         $user->deleted = 1;
         $user->save();
     
-        return redirect()->route('users.index')->with('success', 'Usuario eliminado correctamente.');
+        return redirect()->route('users.index')->with('success', 'This user has been deleted successfully.');
     }
     
 }

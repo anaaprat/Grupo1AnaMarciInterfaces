@@ -14,7 +14,6 @@ class User extends Authenticatable implements MustVerifyEmail
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
@@ -28,7 +27,6 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
      *
      * @var array<int, string>
      */
@@ -38,7 +36,6 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**
-     * The attributes that should be cast.
      *
      * @var array<string, string>
      */
@@ -48,11 +45,10 @@ class User extends Authenticatable implements MustVerifyEmail
         'password' => 'hashed',
     ];
 
-    // En User model
     public function markEmailAsVerified()
     {
         $this->email_verified_at = now();
-        $this->email_confirmed = true;  // Actualiza el campo a true
+        $this->email_confirmed = true;
         $this->save();
     }
 

@@ -29,14 +29,12 @@ class RegisterController extends Controller
     use RegistersUsers;
 
     /**
-     * Where to redirect users after registration.
      *
      * @var string
      */
     protected $redirectTo = '/home';
 
     /**
-     * Create a new controller instance.
      *
      * @return void
      */
@@ -61,19 +59,17 @@ class RegisterController extends Controller
     }
 
     /**
-     * Create a new user instance after a valid registration.
      *
      * @param  array  $data
      * @return \App\Models\User
      */
     protected function create(array $data)
     {
-        // Crear un nuevo usuario, inicialmente no activado y con rol de usuario
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'role' => 'User',
+            'role' => 'u',
             'actived' => false,
             'email_confirmed' => false,
         ]);

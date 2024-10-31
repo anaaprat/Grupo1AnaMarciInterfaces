@@ -100,7 +100,7 @@
         border: none;
     }
     .form-check-label {
-        color: black; /* Color negro para la etiqueta de "Recuerdame" */
+        color: black;
     }
     .alert {
         background-color: rgba(255, 0, 0, 0.1); 

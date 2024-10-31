@@ -30,7 +30,6 @@ class VerificationController extends Controller
     use VerifiesEmails;
 
     /**
-     * Where to redirect users after verification.
      *
      * @var string
      */
@@ -40,7 +39,6 @@ class VerificationController extends Controller
         return view ('auth.emailverified');
     }
     /**
-     * Create a new controller instance.
      *
      * @return void
      */

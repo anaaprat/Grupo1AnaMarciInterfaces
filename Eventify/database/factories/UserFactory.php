@@ -24,20 +24,20 @@ class UserFactory extends Factory
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'), // password
-            'role' => 'User', // Definir solo "User" como valor por defecto para el rol
-            'profile_picture' => 'default.jpg',  // Puedes usar un valor por defecto o generar imágenes
-            'actived' => $this->faker->boolean(), // Valor booleano aleatorio
-            'email_confirmed' => $this->faker->boolean(), // Booleano aleatorio
-            'deleted' => 0,  // Inicialmente, no está borrado
-            'remember_token' => Str::random(10), // Token aleatorio
+            'password' => static::$password ??= Hash::make('password'),
+            'role' => $this->faker->randomElement(['u', 'o']), 
+            'profile_picture' => 'default.jpg',  
+            'actived' => $this->faker->boolean(), 
+            'email_confirmed' => $this->faker->boolean(), 
+            'deleted' => 0,  
+            'remember_token' => Str::random(10),
             'created_at' => now(),
             'updated_at' => now(),
         ];
     }
+    
 
     /**
-     * Indicate that the model's email address should be unverified.
      *
      * @return $this
      */

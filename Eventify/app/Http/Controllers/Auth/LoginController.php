@@ -19,7 +19,7 @@ class LoginController extends Controller
     {
         $user = Auth::user();
 
-        return $user->role === 'admin' ? '/users' : '/';
+        return $user->role === 'a' ? '/users' : '/';
     }
 
     /**     
@@ -79,7 +79,7 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-        if (!$user->actived) { // Verificamos si la cuenta está activa usando 'actived'
+        if (!$user->actived) { 
             Auth::logout();
             return redirect()->route('emailverified')->withErrors(['error' => 'Tu cuenta aún no ha sido activada por el administrador.']);
         }
