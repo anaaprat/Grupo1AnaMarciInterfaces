@@ -50,6 +50,10 @@
             background: rgba(255, 255, 255, 0.3);
         }
 
+        select option {
+            color: #4B3C80; /* Lila oscuro para las opciones de Yes/No */
+        }
+
         button {
             width: 100%;
             padding: 10px;
@@ -85,7 +89,6 @@
     <div class="container">
         <h1>Edit User</h1>
 
-        <!-- Mostrar errores de validación -->
         @if ($errors->any())
             <div class="error">
                 <ul>

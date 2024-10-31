@@ -11,11 +11,11 @@
             color: white;
             font-family: 'Roboto', sans-serif;
             padding: 20px;
-            display: flex; /* Usamos flex para centrar verticalmente */
-            justify-content: center; /* Centra horizontalmente */
-            align-items: center; /* Centra verticalmente */
-            height: 100vh; /* Altura completa de la ventana */
-            margin: 0; /* Eliminar márgenes del body */
+            display: flex; 
+            justify-content: center;
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
         }
 
         h1 {
@@ -25,12 +25,12 @@
 
         .container {
             max-width: 600px;
-            width: 100%; /* Asegura que ocupe el 100% del contenedor */
+            width: 100%; 
             background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
             padding: 20px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-            text-align: left; /* Cambiamos a izquierda */
+            text-align: left; 
         }
 
         p {
@@ -39,7 +39,7 @@
         }
 
         strong {
-            color: #7e1d8e; /* Color más fuerte para los labels */
+            color: #7e1d8e; 
             font-weight: bold;
         }
 
@@ -53,7 +53,7 @@
         }
 
         a:hover {
-            color: #d6bcfa; /* Cambia el color al pasar el mouse */
+            color: #d6bcfa; 
         }
     </style>
 </head>
