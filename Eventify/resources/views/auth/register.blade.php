@@ -11,6 +11,26 @@
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
 
+                        <!-- Selección de rol -->
+                        <div class="row mb-3">
+                            <label class="col-md-4 col-form-label text-md-end" style="color: #5B3F8D;">{{ __('Register As') }}</label>
+
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="role" id="user" value="user" checked>
+                                    <label class="form-check-label" for="user" style="color: #5B3F8D;">
+                                        {{ __('User') }}
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="role" id="organizer" value="organizer">
+                                    <label class="form-check-label" for="organizer" style="color: #5B3F8D;">
+                                        {{ __('Organizer') }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="row mb-3">
                             <label for="name" class="col-md-4 col-form-label text-md-end" style="color: #5B3F8D;">{{ __('Name') }}</label>
 

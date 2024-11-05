@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\EventController;
 use Illuminate\Support\Facades\Auth; 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\VerificationController;
@@ -11,24 +12,25 @@ Route::get('/', function () {
     if (Auth::check()) {
         if (Auth::user()->role === 'a') {
             return redirect()->route('users.index');
+        }else if(Auth::user()->role === 'u'){
+            return redirect()->route('users.dashboard');
+        }else{
+            return redirect()->route('events.index');
+
         }
-        return redirect()->route('users.dashboard');
     }
     return view('auth.login');
 })->name('login');
 
-Route::get('/users', [UserController::class, 'index'])->name('users.index')->middleware('role:a');
-
+Route::get('/users', [UserController::class, 'index'])->name('users.index')->middleware(middleware: 'role:a');
 
 Auth::routes();
-// Middleware para usuarios autenticados y verificados
 Route::middleware(['auth', 'verified'])->group(function () {
-    // Ruta para el dashboard de usuarios regulares
+    Route::get('/events', [EventController::class, 'index'])->name('events.index');
     Route::get('/dashboard', function () {
-        return view('users.dashboard');  // Vista para usuarios regulares
+        return view('users.dashboard');
     })->name('users.dashboard');
 
-    // Ruta protegida que requiere verificación de email
 Route::get('/home', [HomeController::class, 'index'])->middleware('verified');
 });
 

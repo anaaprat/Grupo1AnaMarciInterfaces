@@ -55,6 +55,7 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:5', 'confirmed'],
+            'role' => ['required', 'in:user,organizer'], 
         ]);
     }
 
@@ -65,11 +66,13 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $role = $data['role'] === 'organizer' ? 'o' : 'u';
+
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'role' => 'u',
+            'role' => $role,
             'actived' => false,
             'email_confirmed' => false,
         ]);
@@ -82,7 +85,6 @@ class RegisterController extends Controller
     protected function registered(Request $request, $user)
     {
        
-       // Mail::to($user->email)->send(new VerificationEmail($user));
         return redirect()->route('verification.notice');
     }
 }
