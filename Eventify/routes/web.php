@@ -15,6 +15,7 @@ Route::get('/', function () {
         return redirect()->route('users.dashboard');
     }
     return view('auth.login');
+    
 })->name('login');
 
 Route::get('/users', [UserController::class, 'index'])->name('users.index')->middleware('role:a');
