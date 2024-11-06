@@ -165,10 +165,14 @@
 
 <body>
     <!-- Botón de Logout en la esquina superior izquierda -->
-    <button class="btn-logout" onclick="window.location.href='/login'">
+    <button class="btn-logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
         <i class="fas fa-sign-out-alt"></i>
     </button>
 
+    <!-- Formulario de logout oculto -->
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        @csrf
+    </form>
     <h1>Manage Events</h1>
 
     <div class="menu">

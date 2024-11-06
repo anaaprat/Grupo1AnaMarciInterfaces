@@ -54,7 +54,7 @@
         .manage-buttons i {
             font-size: 18px;
             margin-right: 10px;
-            color: white; /* Color de los iconos */
+            color: white; 
         }
 
         .btn-danger {

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,11 +12,11 @@
             color: white;
             font-family: 'Roboto', sans-serif;
             padding: 20px;
-            display: flex; 
+            display: flex;
             justify-content: center;
-            align-items: center; 
-            height: 100vh; 
-            margin: 0; 
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
 
         h1 {
@@ -24,13 +25,33 @@
         }
 
         .container {
-            max-width: 600px;
-            width: 100%; 
+            max-width: 900px; /* Aumento el tamaño de la caja para acomodar la foto más grande */
+            width: 100%;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
             padding: 20px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-            text-align: left; 
+            text-align: left;
+            display: flex;
+            align-items: center;
+        }
+
+        .user-photo {
+            width: 300px; /* Tamaño de la foto */
+            height: 300px;
+            border-radius: 50%; /* Redondeamos la imagen */
+            overflow: hidden;
+            margin-right: 40px; /* Espaciado más grande entre la foto y los detalles */
+        }
+
+        .user-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Hace que la imagen cubra completamente el contenedor */
+        }
+
+        .user-details {
+            flex: 1;
         }
 
         p {
@@ -39,7 +60,7 @@
         }
 
         strong {
-            color: #7e1d8e; 
+            color: #7e1d8e;
             font-weight: bold;
         }
 
@@ -53,19 +74,29 @@
         }
 
         a:hover {
-            color: #d6bcfa; 
+            color: #d6bcfa;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
-        <h1>User Details</h1>
-        <p><strong>ID:</strong> {{ $user->id }}</p>
-        <p><strong>Name:</strong> {{ $user->name }}</p>
-        <p><strong>Email:</strong> {{ $user->email }}</p>
-        <p><strong>Role:</strong> {{ $user->role }}</p>
-        <p><strong>Created At:</strong> {{ $user->created_at }}</p>
-        <a href="{{ route('users.index') }}">Back</a>
+        <!-- Foto del usuario -->
+        <div class="user-photo">
+        <img src="{{ asset('storage/images/' . $user->profile_picture) }}" alt="">
+        </div>
+
+        
+        <div class="user-details">
+            <h1>User Details</h1>
+            <p><strong>ID:</strong> {{ $user->id }}</p>
+            <p><strong>Name:</strong> {{ $user->name }}</p>
+            <p><strong>Email:</strong> {{ $user->email }}</p>
+            <p><strong>Role:</strong> {{ $user->role }}</p>
+            <p><strong>Created At:</strong> {{ $user->created_at }}</p>
+            <a href="{{ route('users.index') }}">Back</a>
+        </div>
     </div>
 </body>
+
 </html>
