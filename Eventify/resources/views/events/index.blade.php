@@ -7,6 +7,7 @@
     <title>Manage Events</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        /* Estilos existentes */
         body {
             background: #4B3C80;
             color: white;
@@ -20,12 +21,32 @@
             margin-bottom: 20px;
         }
 
+        /* Botón de Logout */
+        .btn-logout {
+            background-color: #e74c3c;
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 50%;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s;
+        }
+
+        .btn-logout:hover {
+            background-color: #c0392b;
+        }
+
         /* Estilos del menú principal */
         .menu {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background-color: #6f5f9d; /* Fondo del menú */
+            background-color: #6f5f9d;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             padding: 10px;
@@ -34,7 +55,7 @@
 
         .menu-item {
             position: relative;
-            cursor: default; /* Indica que no es clicable */
+            cursor: default;
             padding: 10px 15px;
             color: white;
             border-radius: 5px;
@@ -42,25 +63,25 @@
         }
 
         .menu-item:hover {
-            background-color: #5a4a78; /* Cambia el fondo al pasar el mouse */
+            background-color: #5a4a78;
         }
 
         .dropdown {
-            display: none; /* Inicialmente oculto */
+            display: none;
             position: absolute;
-            background-color: #8b7da7; /* Fondo del submenú */
+            background-color: #8b7da7;
             border-radius: 5px;
-            z-index: 1000; /* Asegura que el menú esté encima */
+            z-index: 1000;
             padding: 10px;
-            margin-top: -10px; /* Mueve el submenú hacia arriba */
+            margin-top: -10px;
             width: 150px;
             left: 50%;
             transform: translateX(-50%);
-            bottom: 100%; /* Ubica el submenú justo encima del menú */
+            bottom: 100%;
         }
 
         .menu-item:hover .dropdown {
-            display: block; /* Muestra el submenú al pasar el ratón */
+            display: block;
         }
 
         .category {
@@ -68,16 +89,16 @@
             display: flex;
             align-items: center;
             color: white;
-            border-radius: 3px; /* Redondear las esquinas de las categorías */
+            border-radius: 3px;
             transition: background-color 0.2s;
         }
 
         .category:hover {
-            background-color: #7c6e9a; /* Color de fondo al pasar el mouse sobre la categoría */
+            background-color: #7c6e9a;
         }
 
         .category i {
-            margin-right: 8px; /* Espacio entre el ícono y el texto */
+            margin-right: 8px;
         }
 
         table {
@@ -106,20 +127,19 @@
         }
 
         .manage-buttons {
-            display: flex; /* Cambiado a flex para alinear los botones */
-            gap: 10px; /* Espaciado entre los botones */
+            display: flex;
+            gap: 10px;
         }
 
         .manage-buttons button {
             border: none;
             background-color: transparent;
-            cursor: default; /* Cambiado a default para indicar que no son clicables */
+            cursor: pointer;
         }
 
         .manage-buttons i {
             font-size: 18px;
-            margin-right: 10px;
-            color: white; /* Color de los iconos */
+            color: white;
         }
 
         .btn-add {
@@ -133,8 +153,8 @@
             right: 20px;
             font-size: 24px;
             transition: background-color 0.3s;
-            cursor: default; /* Cambiado a default para indicar que no es clicable */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para el botón */
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         .btn-add:hover {
@@ -144,6 +164,11 @@
 </head>
 
 <body>
+    <!-- Botón de Logout en la esquina superior izquierda -->
+    <button class="btn-logout" onclick="window.location.href='/login'">
+        <i class="fas fa-sign-out-alt"></i>
+    </button>
+
     <h1>Manage Events</h1>
 
     <div class="menu">
@@ -166,46 +191,36 @@
     <table>
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Organized ID</th>
                 <th>Title</th>
                 <th>Description</th>
-                <th>Category ID</th>
                 <th>Start Time</th>
                 <th>End Time</th>
                 <th>Location</th>
                 <th>Max Attendees</th>
                 <th>Price</th>
-                <th>Image URL</th>
-                <th>Created At</th>
-                <th>Updated At</th>
                 <th>Manage</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($events as $event)
                 <tr>
-                    <td>{{ $event->id }}</td>
                     <td>{{ $event->organized_id }}</td>
                     <td>{{ $event->title }}</td>
                     <td>{{ $event->description }}</td>
-                    <td>{{ $event->category_id }}</td>
                     <td>{{ $event->start_time }}</td>
                     <td>{{ $event->end_time }}</td>
                     <td>{{ $event->location }}</td>
                     <td>{{ $event->max_attendees }}</td>
                     <td>{{ $event->price }}</td>
-                    <td>{{ $event->image_url }}</td>
-                    <td>{{ $event->created_at }}</td>
-                    <td>{{ $event->updated_at }}</td>
                     <td class="manage-buttons">
-                        <button>
+                        <button title="View">
                             <i class="fas fa-eye"></i>
                         </button>
-                        <button>
+                        <button title="Edit">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button>
+                        <button title="Delete">
                             <i class="fas fa-trash"></i>
                         </button>
                     </td>
@@ -217,10 +232,6 @@
     <button class="btn-add">
         <i class="fas fa-plus"></i>
     </button>
-
-    <script>
-        // Eliminar la función de filtrado, ya que no se necesita
-    </script>
 </body>
 
 </html>
