@@ -48,6 +48,10 @@ Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'
 Route::post('/email/resend', [VerificationController::class, 'resend'])
     ->middleware(['auth', 'throttle:6,1'])->name('verification.resend');
 
+//Organizador 
+Route::resource('events', controller: EventController::class);
+
+
 //Admin
 Route::get('/users', action: [UserController::class, 'index'])->name('users.index')->middleware('role:a');
 Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show')->middleware('role:a');

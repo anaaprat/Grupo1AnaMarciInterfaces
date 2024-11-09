@@ -173,6 +173,7 @@
     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
         @csrf
     </form>
+
     <h1>Manage Events</h1>
 
     <div class="menu">
@@ -233,9 +234,10 @@
         </tbody>
     </table>
 
-    <button class="btn-add">
+    <!-- Enlace al formulario de crear evento -->
+    <a href="{{ route('events.create') }}" class="btn-add">
         <i class="fas fa-plus"></i>
-    </button>
+    </a>
 </body>
 
 </html>

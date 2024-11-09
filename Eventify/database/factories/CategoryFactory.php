@@ -3,9 +3,10 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Category;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Category>
  */
 class CategoryFactory extends Factory
 {
@@ -15,14 +16,13 @@ class CategoryFactory extends Factory
      * @return array<string, mixed>
      */
     public function definition(): array
-{
-    return [
-        'name' => $this->faker->word(), 
-        'description' => $this->faker->sentence(10), 
-        'deleted' => false, 
-        'created_at' => now(), 
-        'updated_at' => now(), 
-    ];
-}
-
+    {
+        return [
+            'name' => $this->faker->randomElement(['music', 'sport', 'technology']),
+            'description' => $this->faker->sentence(10), 
+            'deleted' => false,
+            'created_at' => now(), 
+            'updated_at' => now(),
+        ];
+    }
 }

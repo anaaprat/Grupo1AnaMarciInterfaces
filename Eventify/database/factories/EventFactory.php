@@ -16,14 +16,13 @@ class EventFactory extends Factory
      *
      * @return array<string, mixed>
      */
-
     public function definition()
     {
         return [
-            'organized_id' => User::factory(),
+            'organized_id' => User::factory(), 
             'title' => $this->faker->sentence(5),
             'description' => $this->faker->paragraph(3),
-            'category_id' => $this->faker->numberBetween(1, 10),
+            'category_id' => $this->faker->numberBetween(1, 3),
             'start_time' => $this->faker->dateTimeBetween('+1 days', '+1 months'),
             'end_time' => $this->faker->dateTimeBetween('+1 months', '+2 months'),
             'location' => $this->faker->address(),
@@ -38,6 +37,11 @@ class EventFactory extends Factory
         ];
     }
 
+    /**
+     *
+     * @param int $userId
+     * @return static
+     */
     public function forOrganizer($userId)
     {
         return $this->state(function (array $attributes) use ($userId) {
@@ -46,6 +50,4 @@ class EventFactory extends Factory
             ];
         });
     }
-
-
 }
