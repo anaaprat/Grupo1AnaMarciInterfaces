@@ -28,46 +28,49 @@ class EventController extends Controller
         return view('events.create', compact('categories'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
-    {
-        // Validar los datos del formulario
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'category_id' => 'required|exists:categories,id',
-            'start_date' => 'required|date',
-            'start_hour' => 'required|integer|between:1,24',
-            'start_minute' => 'required|integer|between:0,59',
-            'end_date' => 'required|date|after_or_equal:start_date',
-            'end_hour' => 'required|integer|between:1,24',
-            'end_minute' => 'required|integer|between:0,59',
-            'location' => 'required|string|max:255',
-            'max_attendees' => 'required|integer|min:1',
-            'price' => 'required|numeric|min:0',
-        ]);
+{
+    // Validar el formulario
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+        'category_id' => 'required|integer',
+        'start_date' => 'required|date',
+        'start_time' => 'required',
+        'end_date' => 'required|date',
+        'end_time' => 'required',
+        'location' => 'required|string|max:255',
+        'max_attendees' => 'required|integer',
+        'price' => 'required|numeric',
+        'image_file' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
 
-        // Combinar fecha y hora para obtener la fecha completa
-        $start_datetime = $request->start_date . ' ' . $request->start_hour . ':' . $request->start_minute;
-        $end_datetime = $request->end_date . ' ' . $request->end_hour . ':' . $request->end_minute;
-
-        // Crear el evento en la base de datos
-        Event::create([
-            'title' => $request->title,
-            'description' => $request->description,
-            'category_id' => $request->category_id,
-            'start_time' => $start_datetime,
-            'end_time' => $end_datetime,
-            'location' => $request->location,
-            'max_attendees' => $request->max_attendees,
-            'price' => $request->price,
-        ]);
-
-        // Redirigir al listado de eventos con un mensaje de éxito
-        return redirect()->route('events.index')->with('success', 'Event created successfully.');
+    // Procesar y almacenar la imagen si está presente
+    if ($request->hasFile('image_file')) {
+        $image = $request->file('image_file');
+        $originalName = $image->getClientOriginalName();
+        $image->storeAs('public/imagesEvent', $originalName); 
     }
+
+    // 
+    Event::create([
+        'title' => $request->title,
+        'description' => $request->description,
+        'category_id' => $request->category_id,
+        'start_time' => $request->start_date . ' ' . $request->start_time,
+        'end_time' => $request->end_date . ' ' . $request->end_time,
+        'location' => $request->location,
+        'max_attendees' => $request->max_attendees,
+        'price' => $request->price,
+        'organized_id' => auth()->user()->id, 
+        'image_url' => 'imagesEvent/' . $originalName ?? null, 
+    ]);
+
+    return redirect()->route('events.index')->with('success', 'Event created successfully.');
+}
+
+
+
 
     /**
      * Display the specified resource.
@@ -79,9 +82,6 @@ class EventController extends Controller
         return view('events.show', compact('event'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         // Obtener el evento y las categorías
@@ -90,12 +90,9 @@ class EventController extends Controller
         return view('events.edit', compact('event', 'categories'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(Request $request, string $id)
     {
-        // Validar los datos del formulario
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
@@ -111,7 +108,6 @@ class EventController extends Controller
             'price' => 'required|numeric|min:0',
         ]);
 
-        // Encontrar el evento y actualizarlo
         $event = Event::findOrFail($id);
 
         $start_datetime = $request->start_date . ' ' . $request->start_hour . ':' . $request->start_minute;

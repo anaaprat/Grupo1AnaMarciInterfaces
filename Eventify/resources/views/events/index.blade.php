@@ -84,23 +84,28 @@
             display: block;
         }
 
-        .category {
+        .category,
+        .clear-filters {
             padding: 5px 10px;
             display: flex;
             align-items: center;
             color: white;
             border-radius: 3px;
             transition: background-color 0.2s;
+            cursor: pointer;
         }
 
-        .category:hover {
+        .category:hover,
+        .clear-filters:hover {
             background-color: #7c6e9a;
         }
 
-        .category i {
+        .category i,
+        .clear-filters i {
             margin-right: 8px;
         }
 
+        /* Estilo de la tabla */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -115,6 +120,7 @@
             padding: 15px;
             text-align: left;
             border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            vertical-align: middle;
         }
 
         th {
@@ -126,15 +132,25 @@
             color: white;
         }
 
+        /* Alineación y diseño de los botones de "Manage" */
         .manage-buttons {
             display: flex;
-            gap: 10px;
+            justify-content: center; /* Centra los botones dentro de la celda */
+            align-items: center; /* Alineación vertical */
+            gap: 10px; /* Espaciado entre botones */
         }
 
         .manage-buttons button {
             border: none;
             background-color: transparent;
             cursor: pointer;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .manage-buttons button:hover {
+            background-color: #7c6e9a;
         }
 
         .manage-buttons i {
@@ -164,12 +180,10 @@
 </head>
 
 <body>
-    <!-- Botón de Logout en la esquina superior izquierda -->
     <button class="btn-logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
         <i class="fas fa-sign-out-alt"></i>
     </button>
 
-    <!-- Formulario de logout oculto -->
     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
         @csrf
     </form>
@@ -180,14 +194,18 @@
         <div class="menu-item">
             Eventos
             <div class="dropdown">
-                <div class="category">
+                <!-- Filtrado basado en el ID de categoría -->
+                <div class="category" onclick="filterEvents(1)">
                     <i class="fas fa-music"></i> Music
                 </div>
-                <div class="category">
+                <div class="category" onclick="filterEvents(2)">
                     <i class="fas fa-futbol"></i> Sport
                 </div>
-                <div class="category">
+                <div class="category" onclick="filterEvents(3)">
                     <i class="fas fa-laptop"></i> Technology
+                </div>
+                <div class="clear-filters" onclick="clearFilters()">
+                    <i class="fas fa-times-circle"></i> Clear Filters
                 </div>
             </div>
         </div>
@@ -207,9 +225,9 @@
                 <th>Manage</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="event-table">
             @foreach ($events as $event)
-                <tr>
+                <tr class="event-row" data-category-id="{{ $event->category_id }}">
                     <td>{{ $event->organized_id }}</td>
                     <td>{{ $event->title }}</td>
                     <td>{{ $event->description }}</td>
@@ -219,9 +237,13 @@
                     <td>{{ $event->max_attendees }}</td>
                     <td>{{ $event->price }}</td>
                     <td class="manage-buttons">
-                        <button title="View">
-                            <i class="fas fa-eye"></i>
-                        </button>
+                        <!-- Enlace para visualizar el evento -->
+                        <a href="{{ route('events.show', $event->id) }}" title="View">
+                            <button>
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </a>
+
                         <button title="Edit">
                             <i class="fas fa-edit"></i>
                         </button>
@@ -234,10 +256,29 @@
         </tbody>
     </table>
 
-    <!-- Enlace al formulario de crear evento -->
     <a href="{{ route('events.create') }}" class="btn-add">
         <i class="fas fa-plus"></i>
     </a>
+
+    <script>
+        function filterEvents(categoryId) {
+            const rows = document.querySelectorAll('.event-row');
+            rows.forEach(row => {
+                if (parseInt(row.getAttribute('data-category-id')) === categoryId) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        function clearFilters() {
+            const rows = document.querySelectorAll('.event-row');
+            rows.forEach(row => {
+                row.style.display = '';
+            });
+        }
+    </script>
 </body>
 
 </html>

@@ -10,10 +10,10 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        if (!Schema::hasTable('events')) { // Cambia aquí la verificación de la tabla
+        if (!Schema::hasTable('events')) {
             Schema::create('events', function (Blueprint $table) {
                 $table->id();
-                $table->foreignId('organized_id')->constrained('users')->onDelete('cascade');
+                $table->foreignId('organized_id')->nullable()->constrained('users')->onDelete('cascade');
                 $table->string('title');
                 $table->text('description');
                 $table->foreignId('category_id')->nullable()->constrained('categories')->onDelete('set null');

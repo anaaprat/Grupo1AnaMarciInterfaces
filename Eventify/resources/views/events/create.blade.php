@@ -5,29 +5,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Event</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
-            background: #4B3C80;
-            color: white;
+            background: #EADAF5;
             font-family: 'Roboto', sans-serif;
-            padding: 20px;
-            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #4B3C80;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 700px;
+            background: #FFFFFF;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+            border: 2px solid #D6C1E8;
         }
 
         h1 {
-            text-align: center;
+            font-size: 30px;
+            color: #4B3C80;
             margin-bottom: 20px;
+            text-align: center;
+            font-weight: 500;
         }
 
         .form-group {
             margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
         }
 
         .form-group label {
-            display: block;
-            font-size: 18px;
-            margin-bottom: 5px;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: #6B5294;
         }
 
         .form-group input,
@@ -35,135 +55,137 @@
         .form-group textarea {
             width: 100%;
             padding: 10px;
+            font-size: 14px;
+            border: 1px solid #C3AEE4;
+            border-radius: 8px;
+            background-color: #F7F2FD;
+            color: #4B3C80;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #A083C9;
+            outline: none;
+            box-shadow: 0px 0px 6px rgba(75, 60, 128, 0.2);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .button {
+            padding: 12px 18px;
             font-size: 16px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            background-color: #fff;
-            color: #333;
-        }
-
-        .form-group button {
-            background-color: #2ecc71;
-            border: none;
-            color: white;
-            padding: 15px 20px;
-            border-radius: 5px;
-            font-size: 18px;
+            font-weight: bold;
+            border-radius: 6px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            text-decoration: none;
+            text-align: center;
+            transition: background-color 0.3s, box-shadow 0.3s;
+            border: none;
+            color: #FFFFFF;
+            width: 48%;
         }
 
-        .form-group button:hover {
-            background-color: #27ae60;
+        .btn-create {
+            background-color: #7E57C2;
+        }
+
+        .btn-create:hover {
+            background-color: #6B5294;
+            box-shadow: 0px 4px 10px rgba(110, 90, 160, 0.3);
         }
 
         .btn-back {
-            background-color: #e74c3c;
-            border: none;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 5px;
-            font-size: 18px;
-            cursor: pointer;
-            text-decoration: none;
-            margin-top: 20px;
-            display: inline-block;
+            background-color: #AB7EDA;
         }
 
         .btn-back:hover {
-            background-color: #c0392b;
+            background-color: #9A64C7;
+            box-shadow: 0px 4px 10px rgba(140, 110, 180, 0.3);
         }
     </style>
 </head>
 
 <body>
-    <h1>Add New Event</h1>
-    <form action="{{ route('events.store') }}" method="POST">
-        @csrf
-        <div class="form-group">
-            <label for="title">Event Title</label>
-            <input type="text" name="title" id="title" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="description">Description</label>
-            <textarea name="description" id="description" rows="4" required></textarea>
-        </div>
+    <div class="container">
+        <h1>Add New Event</h1>
+        <form action="{{ route('events.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="form-group">
+                <label for="title">Event Title</label>
+                <input type="text" name="title" id="title" placeholder="Enter event title" required>
+            </div>
 
-        <div class="form-group">
-            <label for="category_id">Category</label>
-            <select name="category_id" id="category_id" required>
-                <option value="1">Music</option>
-                <option value="2">Sport</option>
-                <option value="3">Technology</option>
-            </select>
-        </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea name="description" id="description" rows="4" placeholder="Describe the event" required></textarea>
+            </div>
 
-        <div class="form-group">
-            <label for="start_date">Start Date</label>
-            <input type="date" name="start_date" id="start_date" required>
-        </div>
-
-        <div class="form-group">
-            <label for="start_time">Start Time</label>
-            <div style="display: flex; gap: 10px;">
-                <select name="start_hour" id="start_hour" required>
-                    @for ($i = 1; $i <= 24; $i++)
-                        <option value="{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}">{{ $i }}</option>
-                    @endfor
-                </select>
-                <span>:</span>
-                <select name="start_minute" id="start_minute" required>
-                    @for ($i = 0; $i < 60; $i++)
-                        <option value="{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}">{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}</option>
-                    @endfor
+            <div class="form-group">
+                <label for="category_id">Category</label>
+                <select name="category_id" id="category_id" required>
+                    <option value="">Select Category</option>
+                    <option value="1">Music</option>
+                    <option value="2">Sport</option>
+                    <option value="3">Technology</option>
                 </select>
             </div>
-        </div>
 
-        <div class="form-group">
-            <label for="end_date">End Date</label>
-            <input type="date" name="end_date" id="end_date" required>
-        </div>
-
-        <div class="form-group">
-            <label for="end_time">End Time</label>
-            <div style="display: flex; gap: 10px;">
-                <select name="end_hour" id="end_hour" required>
-                    @for ($i = 1; $i <= 24; $i++)
-                        <option value="{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}">{{ $i }}</option>
-                    @endfor
-                </select>
-                <span>:</span>
-                <select name="end_minute" id="end_minute" required>
-                    @for ($i = 0; $i < 60; $i++)
-                        <option value="{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}">{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}</option>
-                    @endfor
-                </select>
+            <div class="form-group">
+                <label for="start_date">Start Date</label>
+                <input type="date" name="start_date" id="start_date" required>
             </div>
-        </div>
 
-        <div class="form-group">
-            <label for="location">Location</label>
-            <input type="text" name="location" id="location" required>
-        </div>
+            <div class="form-group">
+                <label for="start_time">Start Time</label>
+                <input type="time" name="start_time" id="start_time" required>
+            </div>
 
-        <div class="form-group">
-            <label for="max_attendees">Max Attendees</label>
-            <input type="number" name="max_attendees" id="max_attendees" required>
-        </div>
+            <div class="form-group">
+                <label for="end_date">End Date</label>
+                <input type="date" name="end_date" id="end_date" required>
+            </div>
 
-        <div class="form-group">
-            <label for="price">Price</label>
-            <input type="number" step="0.01" name="price" id="price" required>
-        </div>
+            <div class="form-group">
+                <label for="end_time">End Time</label>
+                <input type="time" name="end_time" id="end_time" required>
+            </div>
 
-        <div class="form-group">
-            <button type="submit">Create Event</button>
-        </div>
-    </form>
+            <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text" name="location" id="location" placeholder="Enter event location" required>
+            </div>
 
-    <a href="{{ route('events.index') }}" class="btn-back">Back to Events</a>
+            <div class="form-group">
+                <label for="max_attendees">Max Attendees</label>
+                <input type="number" name="max_attendees" id="max_attendees" placeholder="Enter max attendees" required>
+            </div>
+
+            <div class="form-group">
+                <label for="price">Price</label>
+                <input type="number" step="0.01" name="price" id="price" placeholder="Enter event price" required>
+            </div>
+
+            <div class="form-group">
+                <label for="image_file">Event Image</label>
+                <input type="file" name="image_file" id="image_file" accept="image/*" required>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="button btn-create">Create Event</button>
+                <a href="{{ route('events.index') }}" class="button btn-back">Back to Events</a>
+            </div>
+        </form>
+    </div>
 </body>
 
 </html>
