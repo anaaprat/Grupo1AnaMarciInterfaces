@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,12 +14,10 @@
             padding: 20px;
             position: relative;
         }
-
         h1 {
             text-align: center;
             margin-bottom: 20px;
         }
-
         /* Botón de Logout */
         .btn-logout {
             background-color: #e74c3c;
@@ -36,11 +33,9 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             transition: background-color 0.3s;
         }
-
         .btn-logout:hover {
             background-color: #c0392b;
         }
-
         /* Estilos del menú principal */
         .menu {
             position: fixed;
@@ -52,7 +47,6 @@
             padding: 10px;
             z-index: 1000;
         }
-
         .menu-item {
             position: relative;
             cursor: default;
@@ -61,11 +55,9 @@
             border-radius: 5px;
             transition: background-color 0.2s;
         }
-
         .menu-item:hover {
             background-color: #5a4a78;
         }
-
         .dropdown {
             display: none;
             position: absolute;
@@ -79,11 +71,9 @@
             transform: translateX(-50%);
             bottom: 100%;
         }
-
         .menu-item:hover .dropdown {
             display: block;
         }
-
         .category,
         .clear-filters {
             padding: 5px 10px;
@@ -94,17 +84,14 @@
             transition: background-color 0.2s;
             cursor: pointer;
         }
-
         .category:hover,
         .clear-filters:hover {
             background-color: #7c6e9a;
         }
-
         .category i,
         .clear-filters i {
             margin-right: 8px;
         }
-
         /* Estilo de la tabla */
         table {
             width: 100%;
@@ -114,7 +101,6 @@
             border-radius: 10px;
             overflow: hidden;
         }
-
         th,
         td {
             padding: 15px;
@@ -122,16 +108,13 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.3);
             vertical-align: middle;
         }
-
         th {
             background-color: #9e7fe6;
             color: white;
         }
-
         td {
             color: white;
         }
-
         /* Alineación y diseño de los botones de "Manage" */
         .manage-buttons {
             display: flex;
@@ -139,7 +122,6 @@
             align-items: center; /* Alineación vertical */
             gap: 10px; /* Espaciado entre botones */
         }
-
         .manage-buttons button {
             border: none;
             background-color: transparent;
@@ -148,16 +130,13 @@
             border-radius: 5px;
             transition: background-color 0.3s;
         }
-
         .manage-buttons button:hover {
             background-color: #7c6e9a;
         }
-
         .manage-buttons i {
             font-size: 18px;
             color: white;
         }
-
         .btn-add {
             background-color: #2ecc71;
             border: none;
@@ -172,24 +151,19 @@
             cursor: pointer;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
-
         .btn-add:hover {
             background-color: #27ae60;
         }
     </style>
 </head>
-
 <body>
     <button class="btn-logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
         <i class="fas fa-sign-out-alt"></i>
     </button>
-
     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
         @csrf
     </form>
-
     <h1>Manage Events</h1>
-
     <div class="menu">
         <div class="menu-item">
             Eventos
@@ -210,7 +184,6 @@
             </div>
         </div>
     </div>
-
     <table>
         <thead>
             <tr>
@@ -227,6 +200,7 @@
         </thead>
         <tbody id="event-table">
             @foreach ($events as $event)
+                @if($event->deleted == 0)
                 <tr class="event-row" data-category-id="{{ $event->category_id }}">
                     <td>{{ $event->organized_id }}</td>
                     <td>{{ $event->title }}</td>
@@ -237,48 +211,46 @@
                     <td>{{ $event->max_attendees }}</td>
                     <td>{{ $event->price }}</td>
                     <td class="manage-buttons">
-                        <!-- Enlace para visualizar el evento -->
+                        <!-- Botón de visualizar evento -->
                         <a href="{{ route('events.show', $event->id) }}" title="View">
                             <button>
                                 <i class="fas fa-eye"></i>
                             </button>
                         </a>
-
-                        <button title="Edit">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button title="Delete">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                        <!-- Botón de editar evento -->
+                        <a href="{{ route('events.edit', $event->id) }}" title="Edit">
+                            <button>
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </a>
+                        <!-- Botón de eliminar evento -->
+                        <form action="{{ route('events.destroy', $event->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this event?');" style="display: inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
                     </td>
                 </tr>
+                @endif
             @endforeach
         </tbody>
     </table>
-
     <a href="{{ route('events.create') }}" class="btn-add">
         <i class="fas fa-plus"></i>
     </a>
-
     <script>
         function filterEvents(categoryId) {
             const rows = document.querySelectorAll('.event-row');
             rows.forEach(row => {
-                if (parseInt(row.getAttribute('data-category-id')) === categoryId) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
+                row.style.display = row.getAttribute('data-category-id') == categoryId ? '' : 'none';
             });
         }
-
         function clearFilters() {
             const rows = document.querySelectorAll('.event-row');
-            rows.forEach(row => {
-                row.style.display = '';
-            });
+            rows.forEach(row => row.style.display = '');
         }
     </script>
 </body>
-
 </html>

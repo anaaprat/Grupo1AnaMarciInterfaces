@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\VerificationController;
 
+
+
 // Ruta raíz
 Route::get('/', function () {
     if (Auth::check()) {
@@ -19,7 +21,7 @@ Route::get('/', function () {
 
         }
     }
-    return view('auth.login');
+    return view('welcome');
 })->name('login');
 
 Route::get('/users', [UserController::class, 'index'])->name('users.index')->middleware(middleware: 'role:a');
