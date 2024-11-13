@@ -10,8 +10,7 @@ use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
 {
-    /**
-     */
+
     public function index()
     {
         $user = auth()->user();
