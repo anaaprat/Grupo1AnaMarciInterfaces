@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Event;
 use App\Models\Category;
+use Illuminate\Support\Facades\Storage;
+
 
 class EventController extends Controller
 {
@@ -79,63 +81,61 @@ class EventController extends Controller
         $categories = Category::all();
         return view('events.edit', compact('event', 'categories'));
     }
-    
+
     public function update(Request $request, $id)
     {
         $event = Event::findOrFail($id);
-    
+
+        // Validación de los campos del formulario
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'category_id' => 'required|exists:categories,id',
+            'category_id' => 'required|integer',
             'start_date' => 'required|date',
-            'start_hour' => 'required|integer|between:1,24',
-            'start_minute' => 'required|integer|between:0,59',
-            'end_date' => 'required|date|after_or_equal:start_date',
-            'end_hour' => 'required|integer|between:1,24',
-            'end_minute' => 'required|integer|between:0,59',
+            'start_time' => 'required',
+            'end_date' => 'required|date',
+            'end_time' => 'required',
             'location' => 'required|string|max:255',
-            'max_attendees' => 'required|integer|min:1',
-            'price' => 'required|numeric|min:0',
+            'max_attendees' => 'required|integer',
+            'price' => 'required|numeric',
             'image_file' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-    
-        // Construir las fechas y horas completas para el evento
-        $start_datetime = $request->start_date . ' ' . $request->start_hour . ':' . $request->start_minute;
-        $end_datetime = $request->end_date . ' ' . $request->end_hour . ':' . $request->end_minute;
-    
-        // Preparar los datos para la actualización
+
+        $startDateTime = $request->start_date . ' ' . $request->start_time . ':00';
+        $endDateTime = $request->end_date . ' ' . $request->end_time . ':00';
+
         $dataToUpdate = [
             'title' => $request->title,
             'description' => $request->description,
-            'category_id' => $request->category_id, // El ID de la categoría seleccionada
-            'start_time' => $start_datetime,
-            'end_time' => $end_datetime,
+            'category_id' => $request->category_id,
+            'start_time' => $startDateTime,
+            'end_time' => $endDateTime,
             'location' => $request->location,
             'max_attendees' => $request->max_attendees,
             'price' => $request->price,
         ];
-    
-        // Manejar la imagen si se sube una nueva
+
         if ($request->hasFile('image_file')) {
             if ($event->image_url && \Storage::exists('public/' . $event->image_url)) {
                 \Storage::delete('public/' . $event->image_url);
             }
-    
             $imagePath = $request->file('image_file')->store('event_images', 'public');
             $dataToUpdate['image_url'] = $imagePath;
         }
-    
-        // Actualizar el evento con los datos proporcionados
+
         $event->update($dataToUpdate);
-    
-        return redirect()->route('events.index')->with('success', 'This event has been updated successfully.');
+
+        return redirect()->route('events.index')->with('success', 'Event updated successfully.');
     }
-    
+
+
 
     public function destroy(string $id)
     {
         $event = Event::findOrFail($id);
+        if ($event->image_path) {
+            Storage::delete('public/imagesEvent/' . $event->image_path);
+        }
         $event->deleted = 1;
         $event->save();
 

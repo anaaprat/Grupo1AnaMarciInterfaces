@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -113,7 +114,18 @@
         }
     </style>
 </head>
+
 <body>
+    @if ($errors->any())
+        <div class="alert alert-danger"
+            style="background-color: rgba(255, 0, 0, 0.1); border-color: rgba(255, 0, 0, 0.3); color: #5B3F8D;">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <div class="container">
         <h1>Edit Event</h1>
         <form action="{{ route('events.update', $event->id) }}" method="POST" enctype="multipart/form-data">
@@ -143,22 +155,26 @@
 
             <div class="form-group">
                 <label for="start_date">Start Date</label>
-                <input type="date" name="start_date" id="start_date" value="{{ \Carbon\Carbon::parse($event->start_time)->format('Y-m-d') }}" required>
+                <input type="date" name="start_date" id="start_date"
+                    value="{{ \Carbon\Carbon::parse($event->start_time)->format('Y-m-d') }}" required>
             </div>
 
             <div class="form-group">
                 <label for="start_time">Start Time</label>
-                <input type="time" name="start_time" id="start_time" value="{{ \Carbon\Carbon::parse($event->start_time)->format('H:i') }}" required>
+                <input type="time" name="start_time" id="start_time"
+                    value="{{ \Carbon\Carbon::parse($event->start_time)->format('H:i') }}" required>
             </div>
 
             <div class="form-group">
                 <label for="end_date">End Date</label>
-                <input type="date" name="end_date" id="end_date" value="{{ \Carbon\Carbon::parse($event->end_time)->format('Y-m-d') }}" required>
+                <input type="date" name="end_date" id="end_date"
+                    value="{{ \Carbon\Carbon::parse($event->end_time)->format('Y-m-d') }}" required>
             </div>
 
             <div class="form-group">
                 <label for="end_time">End Time</label>
-                <input type="time" name="end_time" id="end_time" value="{{ \Carbon\Carbon::parse($event->end_time)->format('H:i') }}" required>
+                <input type="time" name="end_time" id="end_time"
+                    value="{{ \Carbon\Carbon::parse($event->end_time)->format('H:i') }}" required>
             </div>
 
             <div class="form-group">
@@ -168,7 +184,8 @@
 
             <div class="form-group">
                 <label for="max_attendees">Max Attendees</label>
-                <input type="number" name="max_attendees" id="max_attendees" value="{{ $event->max_attendees }}" required>
+                <input type="number" name="max_attendees" id="max_attendees" value="{{ $event->max_attendees }}"
+                    required>
             </div>
 
             <div class="form-group">
@@ -188,4 +205,5 @@
         </form>
     </div>
 </body>
+
 </html>

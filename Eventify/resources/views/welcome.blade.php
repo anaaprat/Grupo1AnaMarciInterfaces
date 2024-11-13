@@ -5,11 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eventify</title>
 
-    <!-- Link to Google Fonts for a modern look -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
 
     <style>
-        /* Global reset and styles */
         body, html {
             margin: 0;
             padding: 0;
@@ -20,7 +18,6 @@
             position: relative;
         }
 
-        /* Background image styling */
         .background {
             position: absolute;
             top: 0;
@@ -30,18 +27,17 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            filter: blur(8px) brightness(0.7); /* Apply blur and dim the images */
-            transition: background-image 1s ease; /* Smooth transition */
+            filter: blur(8px) brightness(0.7); 
+            transition: background-image 1s ease;
             z-index: -1;
         }
 
-        /* Arrow styling */
         .arrow {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            font-size: 1.5rem; /* Smaller arrow size */
-            color: rgba(255, 255, 255, 0.4); /* Slightly transparent color */
+            font-size: 1.5rem; 
+            color: rgba(255, 255, 255, 0.4); 
             cursor: pointer;
             padding: 5px;
             background-color: rgba(0, 0, 0, 0.3);
@@ -90,7 +86,6 @@
             color: rgba(255, 255, 255, 0.8);
         }
 
-        /* Button position on the top right */
         .top-right-buttons {
             position: absolute;
             top: 20px;
@@ -128,14 +123,11 @@
     </style>
 </head>
 <body>
-    <!-- Background that changes -->
     <div class="background" id="background"></div>
 
-    <!-- Left and right arrows -->
     <div class="arrow arrow-left" onclick="prevImage()">&#9664;</div>
     <div class="arrow arrow-right" onclick="nextImage()">&#9654;</div>
 
-    <!-- Buttons in top-right corner -->
     <div class="top-right-buttons">
         @if (Route::has('login'))
             <a href="{{ route('login') }}">
@@ -150,15 +142,12 @@
         @endif
     </div>
 
-    <!-- Main content -->
     <div class="container">
         <h1 class="title">Welcome to Eventify</h1>
         <p class="subtitle">Create and explore exciting events in music, sports, and technology. Join us and be part of the action!</p>
     </div>
 
-    <!-- JavaScript for controlling background images -->
     <script>
-        // Array to hold the URLs of images dynamically
         const images = [
             @php
                 $images = glob(public_path('storage/imagesEvent/*.{jpg,png,jpeg,gif}'), GLOB_BRACE);
@@ -170,24 +159,20 @@
 
         let currentIndex = 0;
 
-        // Set the initial background image
         const background = document.getElementById('background');
         background.style.backgroundImage = `url(${images[currentIndex]})`;
 
-        // Function to go to the next image
         function nextImage() {
-            currentIndex = (currentIndex + 1) % images.length; // Loop back to the start
+            currentIndex = (currentIndex + 1) % images.length; 
             background.style.backgroundImage = `url(${images[currentIndex]})`;
         }
 
-        // Function to go to the previous image
         function prevImage() {
-            currentIndex = (currentIndex - 1 + images.length) % images.length; // Loop back to the end
+            currentIndex = (currentIndex - 1 + images.length) % images.length; 
             background.style.backgroundImage = `url(${images[currentIndex]})`;
         }
 
-        // Automatically change background every 5 seconds
-        setInterval(nextImage, 5000);
+        setInterval(nextImage, 4000);
     </script>
 </body>
 </html>
