@@ -16,7 +16,6 @@ class VerificationEmail extends Mailable
     public function __construct(User $user)
     {
         $this->user = $user;
-        // Generar el enlace de verificación
         $this->verificationUrl = route('verification.verify', [
             'id' => $this->user->id,
             'hash' => sha1($this->user->email),

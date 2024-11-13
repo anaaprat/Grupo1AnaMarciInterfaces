@@ -17,21 +17,18 @@ return new class extends Migration {
                 $table->string('email')->unique();
                 $table->timestamp('email_verified_at')->nullable();
                 $table->string('password');
-                $table->string('role')->default('User'); // Rol de usuario por defecto
-                $table->string('profile_picture')->nullable(); // Campo para imagen de perfil
-                $table->boolean('actived')->default(false); // Si está activado por el administrador
-                $table->boolean('email_confirmed')->default(false); // Confirmación del email
-                $table->boolean('deleted')->default(false); // Soft delete
+                $table->string('role')->default('User'); 
+                $table->string('profile_picture')->nullable(); 
+                $table->boolean('actived')->default(false); 
+                $table->boolean('email_confirmed')->default(false); 
+                $table->boolean('deleted')->default(false);
                 $table->rememberToken();
-                $table->timestamps(); // Campos created_at y updated_at
+                $table->timestamps(); 
             });
         }
     }
 
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('users');

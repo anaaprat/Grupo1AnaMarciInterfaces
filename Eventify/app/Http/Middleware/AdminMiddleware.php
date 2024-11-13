@@ -20,6 +20,6 @@ class AdminMiddleware
             return $next($request);
         }
 
-        return redirect('/');  // Si no es admin, redirige a la página principal
+        return redirect('/');  
     }
 }

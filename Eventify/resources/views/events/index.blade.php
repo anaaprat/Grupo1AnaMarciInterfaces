@@ -6,7 +6,6 @@
     <title>Manage Events</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Estilos existentes */
         body {
             background: #4B3C80;
             color: white;
@@ -18,7 +17,6 @@
             text-align: center;
             margin-bottom: 20px;
         }
-        /* Botón de Logout */
         .btn-logout {
             background-color: #e74c3c;
             border: none;
@@ -36,7 +34,6 @@
         .btn-logout:hover {
             background-color: #c0392b;
         }
-        /* Estilos del menú principal */
         .menu {
             position: fixed;
             bottom: 20px;
@@ -92,7 +89,6 @@
         .clear-filters i {
             margin-right: 8px;
         }
-        /* Estilo de la tabla */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -115,12 +111,11 @@
         td {
             color: white;
         }
-        /* Alineación y diseño de los botones de "Manage" */
         .manage-buttons {
             display: flex;
-            justify-content: center; /* Centra los botones dentro de la celda */
-            align-items: center; /* Alineación vertical */
-            gap: 10px; /* Espaciado entre botones */
+            justify-content: center; 
+            align-items: center; 
+            gap: 10px; 
         }
         .manage-buttons button {
             border: none;
@@ -168,7 +163,6 @@
         <div class="menu-item">
             Events
             <div class="dropdown">
-                <!-- Filtrado basado en el ID de categoría -->
                 <div class="category" onclick="filterEvents(1)">
                     <i class="fas fa-music"></i> Music
                 </div>
@@ -211,19 +205,16 @@
                     <td>{{ $event->max_attendees }}</td>
                     <td>{{ $event->price }}</td>
                     <td class="manage-buttons">
-                        <!-- Botón de visualizar evento -->
                         <a href="{{ route('events.show', $event->id) }}" title="View">
                             <button>
                                 <i class="fas fa-eye"></i>
                             </button>
                         </a>
-                        <!-- Botón de editar evento -->
                         <a href="{{ route('events.edit', $event->id) }}" title="Edit">
                             <button>
                                 <i class="fas fa-edit"></i>
                             </button>
                         </a>
-                        <!-- Botón de eliminar evento -->
                         <form action="{{ route('events.destroy', $event->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this event?');" style="display: inline;">
                             @csrf
                             @method('DELETE')

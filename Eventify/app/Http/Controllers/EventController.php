@@ -14,9 +14,17 @@ class EventController extends Controller
      */
     public function index()
     {
-        $events = Event::all();
+        $user = auth()->user();
+
+        if ($user->role === 'o') {
+            $events = Event::where('organized_id', $user->id)->get();
+        } else {
+            $events = Event::all();
+        }
+
         return view('events.index', compact('events'));
     }
+
 
 
     public function create()
@@ -86,7 +94,6 @@ class EventController extends Controller
     {
         $event = Event::findOrFail($id);
 
-        // Validación de los campos del formulario
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',

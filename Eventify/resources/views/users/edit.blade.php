@@ -51,7 +51,7 @@
         }
 
         select option {
-            color: #4B3C80; /* Lila oscuro para las opciones de Yes/No */
+            color: #4B3C80; 
         }
 
         button {
