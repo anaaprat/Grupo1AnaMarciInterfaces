@@ -166,7 +166,7 @@
     <h1>Manage Events</h1>
     <div class="menu">
         <div class="menu-item">
-            Eventos
+            Events
             <div class="dropdown">
                 <!-- Filtrado basado en el ID de categoría -->
                 <div class="category" onclick="filterEvents(1)">
