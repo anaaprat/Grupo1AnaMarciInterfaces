@@ -46,7 +46,7 @@ Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'
     ->middleware(['signed', 'auth'])
     ->name('verification.verify');
 
-// Reenvío de verificación de email
+// Reenvío de verificación de email para ver si funciona
 Route::post('/email/resend', [VerificationController::class, 'resend'])
     ->middleware(['auth', 'throttle:6,1'])->name('verification.resend');
 
