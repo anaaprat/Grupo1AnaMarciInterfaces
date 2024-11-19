@@ -21,8 +21,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
-        'role',         
-        'actived',       
+        'role',
+        'actived',
         'email_confirmed'
     ];
 
@@ -51,5 +51,16 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->email_confirmed = true;
         $this->save();
     }
+
+    public function attendedEvents()
+    {
+        return $this->belongsToMany(Event::class, 'event_attendees', 'user_id', 'event_id');
+    }
+
+    public function events()
+    {
+        return $this->hasMany(Event::class, 'organizer_id');
+    }
+
 
 }

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Event;
 use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
+
 
 
 class EventController extends Controller
@@ -147,4 +149,34 @@ class EventController extends Controller
 
         return redirect()->route('events.index')->with('success', 'Event deleted successfully.');
     }
+
+    public function availableEvents(Request $request)
+    {
+        $user = auth()->user();
+
+        $eventos = Event::where('start_time', '>=', Carbon::tomorrow())
+            ->whereDoesntHave('attendees', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })
+            ->with('organizer') 
+            ->orderBy('start_time', 'asc')
+            ->get();
+
+        return view('users.dashboard', compact('eventos'));
+    }
+
+    public function registerEvent(Request $request, $id)
+    {
+        $user = auth()->user();
+        $event = Event::findOrFail($id);
+
+        if (!$user->attendedEvents->contains($event)) {
+            $user->attendedEvents()->attach($event);
+            return redirect()->route('users.dashboard')->with('success', 'You have successfully registered for the event');
+        }
+
+        return redirect()->route('users.dashboard')->with('error', 'You are already registered for this event');
+    }
+
+
 }

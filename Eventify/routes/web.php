@@ -61,4 +61,8 @@ Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.de
 Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit')->middleware('role:a');
 Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update')->middleware('role:a');
 
+//User
+Route::get('/dashboard', [EventController::class, 'availableEvents'])->name('users.dashboard');
+Route::post('/events/register/{id}', [EventController::class, 'registerEvent'])->name('events.register');
+
 

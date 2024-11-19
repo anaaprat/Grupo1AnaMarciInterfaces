@@ -10,18 +10,18 @@ class Event extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 
-        'description', 
-        'category_id', 
-        'start_time', 
-        'end_time', 
+        'title',
+        'description',
+        'category_id',
+        'start_time',
+        'end_time',
         'location',
-        'max_attendees', 
-        'price', 
-        'organized_id', 
-        'latitude', 
-        'longitude', 
-        'image_url', 
+        'max_attendees',
+        'price',
+        'organized_id',
+        'latitude',
+        'longitude',
+        'image_url',
         'deleted'
     ];
 
@@ -34,4 +34,10 @@ class Event extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function attendees()
+    {
+        return $this->belongsToMany(User::class, 'event_attendees', 'event_id', 'user_id');
+    }
+
 }

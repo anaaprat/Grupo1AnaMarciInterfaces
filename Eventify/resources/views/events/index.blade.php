@@ -89,49 +89,6 @@
         .clear-filters i {
             margin-right: 8px;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-            background: #8b5cf6;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        th,
-        td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-            vertical-align: middle;
-        }
-        th {
-            background-color: #9e7fe6;
-            color: white;
-        }
-        td {
-            color: white;
-        }
-        .manage-buttons {
-            display: flex;
-            justify-content: center; 
-            align-items: center; 
-            gap: 10px; 
-        }
-        .manage-buttons button {
-            border: none;
-            background-color: transparent;
-            cursor: pointer;
-            padding: 10px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-        .manage-buttons button:hover {
-            background-color: #7c6e9a;
-        }
-        .manage-buttons i {
-            font-size: 18px;
-            color: white;
-        }
         .btn-add {
             background-color: #2ecc71;
             border: none;
@@ -148,6 +105,61 @@
         }
         .btn-add:hover {
             background-color: #27ae60;
+        }
+
+        /* Nuevo estilo para las tarjetas */
+        .event-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px; /* Espacio entre las tarjetas */
+            justify-content: center; /* Centra las tarjetas */
+        }
+
+        .event-card {
+            background: #8b5cf6;
+            border-radius: 10px;
+            padding: 15px;
+            width: 45%; /* Cada tarjeta ocupará el 45% del ancho, dejando espacio entre ellas */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            box-sizing: border-box; /* Para asegurar que el padding no afecte el tamaño */
+        }
+        .event-card h5 {
+            color: #fff;
+            font-weight: bold;
+        }
+        .event-card p {
+            color: #d1c4e9;
+        }
+        .event-card .manage-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .manage-buttons button {
+            background-color: transparent;
+            border: 1px solid #fff;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .manage-buttons button:hover {
+            background-color: #7c6e9a;
+        }
+
+        .btn-manage {
+            background-color: #5b3f8d;
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-align: center;
+            width: 100%;
+        }
+        .btn-manage:hover {
+            background-color: #7c6e9a;
         }
     </style>
 </head>
@@ -178,69 +190,54 @@
             </div>
         </div>
     </div>
-    <table>
-        <thead>
-            <tr>
-                <th>Organized ID</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Start Time</th>
-                <th>End Time</th>
-                <th>Location</th>
-                <th>Max Attendees</th>
-                <th>Price</th>
-                <th>Manage</th>
-            </tr>
-        </thead>
-        <tbody id="event-table">
-            @foreach ($events as $event)
-                @if($event->deleted == 0)
-                <tr class="event-row" data-category-id="{{ $event->category_id }}">
-                    <td>{{ $event->organized_id }}</td>
-                    <td>{{ $event->title }}</td>
-                    <td>{{ $event->description }}</td>
-                    <td>{{ $event->start_time }}</td>
-                    <td>{{ $event->end_time }}</td>
-                    <td>{{ $event->location }}</td>
-                    <td>{{ $event->max_attendees }}</td>
-                    <td>{{ $event->price }}</td>
-                    <td class="manage-buttons">
+    
+    <div class="event-list">
+        @foreach ($events as $event)
+            @if($event->deleted == 0)
+                <div class="event-card" data-category-id="{{ $event->category_id }}">
+                    <h5>{{ $event->title }}</h5>
+                    <p>{{ $event->description }}</p>
+                    <p><strong>Start Time:</strong> {{ $event->start_time }}</p>
+                    <p><strong>Location:</strong> {{ $event->location }}</p>
+                    <div class="manage-buttons">
                         <a href="{{ route('events.show', $event->id) }}" title="View">
                             <button>
-                                <i class="fas fa-eye"></i>
+                                <i class="fas fa-eye"></i> View
                             </button>
                         </a>
                         <a href="{{ route('events.edit', $event->id) }}" title="Edit">
                             <button>
-                                <i class="fas fa-edit"></i>
+                                <i class="fas fa-edit"></i> Edit
                             </button>
                         </a>
                         <form action="{{ route('events.destroy', $event->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this event?');" style="display: inline;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" title="Delete">
-                                <i class="fas fa-trash"></i>
+                                <i class="fas fa-trash"></i> Delete
                             </button>
                         </form>
-                    </td>
-                </tr>
-                @endif
-            @endforeach
-        </tbody>
-    </table>
+                    </div>
+                </div>
+            @endif
+        @endforeach
+    </div>
+
     <a href="{{ route('events.create') }}" class="btn-add">
         <i class="fas fa-plus"></i>
     </a>
+
     <script>
         function filterEvents(categoryId) {
-            const rows = document.querySelectorAll('.event-row');
-            rows.forEach(row => {
-                row.style.display = row.getAttribute('data-category-id') == categoryId ? '' : 'none';
+            const cards = document.querySelectorAll('.event-card');
+            cards.forEach(card => {
+                card.style.display = card.getAttribute('data-category-id') == categoryId ? '' : 'none';
             });
         }
+
         function clearFilters() {
-            const rows = document.querySelectorAll('.event-row');
-            rows.forEach(row => row.style.display = '');
+            const cards = document.querySelectorAll('.event-card');
+            cards.forEach(card => card.style.display = '');
         }
     </script>
 </body>
