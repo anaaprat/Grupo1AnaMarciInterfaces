@@ -22,9 +22,11 @@ class Event_AttendeesFactory extends Factory
         return [
             'event_id' => EventFactory::factory(),
             'user_id' => UserFactory::factory(),
-            'status' => $this->faker->randomElement(['pending', 'confirmed', 'cancelled']),
+            'status' => $this->faker->randomElement(['confirmed', 'cancelled']),
             'register_at' => Carbon::now(),
             'deleted' => $this->faker->boolean(10), 
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ];
     }
 }

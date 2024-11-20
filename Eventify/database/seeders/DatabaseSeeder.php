@@ -27,6 +27,14 @@ class DatabaseSeeder extends Seeder
             'email_confirmed' => 1,
             'role' => 'o',
         ]);
+        \App\Models\User::factory()->create([
+            'name' => 'Ana Prat',
+            'email' => 'anaprat26@gmail.com',
+            'password' => '12345678',
+            'actived' => 1,
+            'email_confirmed' => 1,
+            'role' => 'u',
+        ]);
         \App\Models\Category::factory()->create([
             'name' => 'music',
             'description' => 'Category for music events',

@@ -58,8 +58,20 @@ class EventAttendeesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Event_Attendees $event_Attendees)
+    public function destroy($eventId)
     {
-        //
+        $user = auth()->user();
+
+        $attendee = Event_Attendees::where('user_id', $user->id)->where('event_id', $eventId)->first();
+
+        if ($attendee) {
+            $attendee->delete();
+
+            return redirect()->route('users.userEvents')->with('success', 'You have been unregistered from the event.');
+        }
+
+        return redirect()->route('users.userEvents')->with('error', 'You were not registered for this event.');
     }
+
+
 }

@@ -19,32 +19,31 @@
         </div>
     @endif
 
-    @if($eventos->isEmpty())
+    @if($eventsUser->isEmpty())
         <div class="alert alert-info text-center">
             You are not registered for any events.
         </div>
     @else
-        <!-- Menú con Submenú -->
+        <!-- Submenú -->
         <div class="text-center mb-4">
-            <div class="dropdown d-inline-block">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="eventsMenu" data-bs-toggle="dropdown" aria-expanded="false">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="eventsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                     Events
                 </button>
-                <ul class="dropdown-menu" aria-labelledby="eventsMenu">
-                    <li><a class="dropdown-item" href="{{ route('users.dashboard') }}" id="all-events">All Events</a></li>
-                    <li><a class="dropdown-item" href="{{ route('users.userEvents') }}" id="my-events">My Events</a></li>
+                <ul class="dropdown-menu" aria-labelledby="eventsDropdown">
+                    <li><a class="dropdown-item" href="{{ route('users.dashboard') }}">All Events</a></li>
+                    <li><a class="dropdown-item" href="{{ route('users.userEvents') }}">My Events</a></li>
                 </ul>
             </div>
         </div>
 
-        <!-- Eventos -->
         <div class="row mt-4">
-            @foreach($eventos as $event)
+            @foreach($eventsUser as $event)
                 <div class="col-md-4 mb-4 event-card">
                     <div class="card" style="border: 1px solid #D6C3E1; border-radius: 10px; background-color: #F9F4FB;">
                         <div class="card-body">
                             <img src="{{ asset('/storage/imagesEvent/' . $event->image_url) }}" class="card-img-top"
-                                 style="border-radius: 8px; height: 200px; object-fit: cover;" alt="Event Image">
+                                style="border-radius: 8px; height: 200px; object-fit: cover;" alt="Event Image">
 
                             <h5 class="card-title" style="color: #5B3F8D; font-weight: bold;">{{ $event->name }}</h5>
                             <p class="card-text" style="color: #6c6f88;">{{ $event->description }}</p>
@@ -63,15 +62,18 @@
                                 {{ \Carbon\Carbon::parse($event->pivot->created_at)->format('d/m/Y') }}
                             </p>
 
-                            <!-- Formulario para desapuntarse del evento -->
-                            <form action="{{ route('events.unregister', $event->id) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Unregister</button>
-                            </form>
+                            <!-- Botones "Unregister" y "View Details" uno al lado del otro -->
+                            <div class="d-flex justify-content-between">
+                                <form action="{{ route('events.unregister', $event->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">Unregister</button>
+                                </form>
 
-                            <a href="{{ route('events.show', $event->id) }}" class="btn"
-                               style="background-color: #5B3F8D; color: white;">View Details</a>
+                                <a href="{{ route('events.show', $event->id) }}" class="btn"
+                                    style="background-color: #5B3F8D; color: white;">View Details</a>
+                            </div>
+
                         </div>
                     </div>
                 </div>

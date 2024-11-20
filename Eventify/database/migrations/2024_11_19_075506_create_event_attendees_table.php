@@ -14,10 +14,12 @@ return new class extends Migration
             $table->id();
             $table->foreignId('event_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('status')->default('pending');
+            $table->string('status')->default('comfirmed');
             $table->timestamp('register_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->boolean('deleted')->default(false);
-            $table->timestamps();
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+
         });
     }
     

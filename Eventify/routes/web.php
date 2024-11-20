@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\EventAttendeesController;
 use App\Http\Controllers\EventController;
 use Illuminate\Support\Facades\Auth; 
 use App\Http\Controllers\HomeController;
@@ -64,5 +65,7 @@ Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update
 //User
 Route::get('/dashboard', [EventController::class, 'availableEvents'])->name('users.dashboard');
 Route::post('/events/register/{id}', [EventController::class, 'registerEvent'])->name('events.register');
+Route::get('/my-events', [EventController::class, 'myEvents'])->name('users.userEvents');
+Route::delete('/events/{event}/unregister', [EventAttendeesController::class, 'destroy'])->name('events.unregister');
 
 

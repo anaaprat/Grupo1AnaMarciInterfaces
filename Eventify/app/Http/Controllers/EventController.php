@@ -73,16 +73,16 @@ class EventController extends Controller
         return redirect()->route('events.index')->with('success', 'Event created successfully.');
     }
 
-
-
-
-    /**
-     */
     public function show(string $id)
-    {
-        $event = Event::findOrFail($id);
-        return view('events.show', compact('event'));
-    }
+{
+    $event = Event::findOrFail($id);
+    $user = auth()->user();
+
+    $isOrganizer = $event->organized_id === $user->id;
+
+    return view('events.show', compact('event', 'isOrganizer'));
+}
+
 
     public function edit($id)
     {
@@ -153,22 +153,24 @@ class EventController extends Controller
     public function availableEvents(Request $request)
     {
         $user = auth()->user();
-
+        $categories = Category::all();
         $eventos = Event::where('start_time', '>=', Carbon::tomorrow())
             ->whereDoesntHave('attendees', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             })
-            ->with('organizer') 
+            ->with('organizer')
             ->orderBy('start_time', 'asc')
             ->get();
 
-        return view('users.dashboard', compact('eventos'));
+        return view('users.dashboard', compact('eventos', 'categories'));
     }
 
     public function registerEvent(Request $request, $id)
     {
         $user = auth()->user();
         $event = Event::findOrFail($id);
+        $categories = Category::all(); // Load categories
+
 
         if (!$user->attendedEvents->contains($event)) {
             $user->attendedEvents()->attach($event);
@@ -178,5 +180,11 @@ class EventController extends Controller
         return redirect()->route('users.dashboard')->with('error', 'You are already registered for this event');
     }
 
+    public function myEvents()
+    {
+        $user = auth()->user();
+        $eventsUser = $user->registeredEvents()->get(); 
+        return view('users.userEvents', compact('eventsUser'));
+    }
 
 }

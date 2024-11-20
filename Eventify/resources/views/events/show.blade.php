@@ -195,9 +195,16 @@
         </div>
 
         <div class="btn-container">
-            <a href="{{ route('events.index') }}" class="btn-back">
-                <i class="fas fa-arrow-left"></i> Back to Events
-            </a>
+            <!-- Botón "Volver" condicional -->
+            @if($isOrganizer)
+                <a href="{{ route('events.index') }}" class="btn-back">
+                    <i class="fas fa-arrow-left"></i> Back to My Events (Organizer)
+                </a>
+            @else
+                <a href="{{ route('users.userEvents') }}" class="btn-back">
+                    <i class="fas fa-arrow-left"></i> Back to My Events
+                </a>
+            @endif
         </div>
     </div>
 

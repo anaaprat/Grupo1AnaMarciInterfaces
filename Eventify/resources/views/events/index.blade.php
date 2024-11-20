@@ -107,22 +107,22 @@
             background-color: #27ae60;
         }
 
-        /* Nuevo estilo para las tarjetas */
+       
         .event-list {
             display: flex;
             flex-wrap: wrap;
-            gap: 20px; /* Espacio entre las tarjetas */
-            justify-content: center; /* Centra las tarjetas */
+            gap: 20px;
+            justify-content: center; 
         }
 
         .event-card {
             background: #8b5cf6;
             border-radius: 10px;
             padding: 15px;
-            width: 45%; /* Cada tarjeta ocupará el 45% del ancho, dejando espacio entre ellas */
+            width: 45%;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
-            box-sizing: border-box; /* Para asegurar que el padding no afecte el tamaño */
+            box-sizing: border-box;
         }
         .event-card h5 {
             color: #fff;
