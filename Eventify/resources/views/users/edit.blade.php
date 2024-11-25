@@ -51,7 +51,7 @@
         }
 
         select option {
-            color: #4B3C80; 
+            color: #4B3C80;
         }
 
         button {
@@ -111,12 +111,6 @@
 
             <label for="role">Role:</label>
             <input type="text" id="role" name="role" value="{{ old('role', $user->role) }}" required>
-
-            <label for="actived">Active:</label>
-            <select name="actived" id="actived" required>
-                <option value="1" {{ $user->actived ? 'selected' : '' }}>Yes</option>
-                <option value="0" {{ !$user->actived ? 'selected' : '' }}>No</option>
-            </select>
 
             <button type="submit">Update</button>
         </form>

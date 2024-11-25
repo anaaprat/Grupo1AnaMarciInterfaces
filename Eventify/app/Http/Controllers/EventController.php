@@ -13,18 +13,22 @@ use Carbon\Carbon;
 class EventController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
         $user = auth()->user();
+        $order = $request->get('order', 'asc');
 
         if ($user->role === 'o') {
-            $events = Event::where('organized_id', $user->id)->get();
+            $events = Event::where('organized_id', $user->id)
+                ->orderBy('start_time', $order)
+                ->get();
         } else {
-            $events = Event::all();
+            $events = Event::orderBy('start_time', $order)->get();
         }
 
         return view('events.index', compact('events'));
     }
+
 
 
 
@@ -52,11 +56,10 @@ class EventController extends Controller
 
         if ($request->hasFile('image_file')) {
             $image = $request->file('image_file');
-            $originalName = $image->getClientOriginalName();
-            $image->storeAs('public/imagesEvent', $originalName);
+            $imagePath = $image->store('public/imagesEvent');
+            $imageName = basename($imagePath);
         }
 
-        // 
         Event::create([
             'title' => $request->title,
             'description' => $request->description,
@@ -67,11 +70,12 @@ class EventController extends Controller
             'max_attendees' => $request->max_attendees,
             'price' => $request->price,
             'organized_id' => auth()->user()->id,
-            'image_url' => '' . $originalName ?? null,
+            'image_url' => $imageName ?? null,
         ]);
 
         return redirect()->route('events.index')->with('success', 'Event created successfully.');
     }
+
 
     public function show(string $id)
     {
@@ -182,8 +186,8 @@ class EventController extends Controller
 
     public function myEvents()
     {
-        $user = auth()->user(); 
-        $eventsUser = $user->registeredEvents()->get(); 
+        $user = auth()->user();
+        $eventsUser = $user->registeredEvents()->get();
         return view('users.userEvents', compact('eventsUser'));
     }
 

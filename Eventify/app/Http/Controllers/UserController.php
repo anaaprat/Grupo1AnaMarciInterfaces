@@ -71,5 +71,15 @@ class UserController extends Controller
     
         return redirect()->route('users.index')->with('success', 'This user has been deleted successfully.');
     }
+
+    public function toggleActivation($id)
+    {
+        $user = User::findOrFail($id);
+        $user->actived = !$user->actived;
+        $user->save();
+
+        $status = $user->actived ? 'activated' : 'deactivated';
+        return redirect()->route('users.index')->with('success', "User has been {$status} successfully.");
+    }
     
 }

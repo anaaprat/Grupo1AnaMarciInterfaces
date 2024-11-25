@@ -8,11 +8,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
-            background: #4B3C80; 
+            background: #4B3C80;
             color: white;
             font-family: 'Roboto', sans-serif;
             padding: 20px;
-            position: relative; 
+            position: relative;
         }
 
         h1 {
@@ -24,7 +24,7 @@
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
-            background: #8b5cf6; 
+            background: #8b5cf6;
             border-radius: 10px;
             overflow: hidden;
         }
@@ -38,11 +38,11 @@
 
         th {
             background-color: #9e7fe6;
-            color: white; 
+            color: white;
         }
 
         td {
-            color: white; 
+            color: white;
         }
 
         .manage-buttons button {
@@ -54,7 +54,7 @@
         .manage-buttons i {
             font-size: 18px;
             margin-right: 10px;
-            color: white; 
+            color: white;
         }
 
         .btn-danger {
@@ -67,11 +67,39 @@
             cursor: pointer;
             position: absolute;
             top: 20px;
-            left: 20px; 
+            left: 20px;
         }
 
         .btn-danger:hover {
             background-color: #d62839;
+        }
+
+        .btn-activate {
+            background-color: #27ae60;
+            color: white;
+            border-radius: 5px;
+            padding: 10px 15px;
+            border: none;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+
+        .btn-activate:hover {
+            background-color: #218c54;
+        }
+
+        .btn-deactivate {
+            background-color: #e74c3c;
+            color: white;
+            border-radius: 5px;
+            padding: 10px 15px;
+            border: none;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+
+        .btn-deactivate:hover {
+            background-color: #c0392b;
         }
     </style>
 </head>
@@ -110,21 +138,39 @@
                     <td>{{ $user->actived ? '1' : '0' }}</td>
                     <td>{{ $user->deleted ? '1' : '0' }}</td>
                     <td class="manage-buttons">
+                        <!-- View Button -->
                         <button onclick="window.location.href='{{ route('users.show', $user->id) }}'">
                             <i class="fas fa-eye"></i>
                         </button>
 
+                        <!-- Delete Form -->
                         <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?')">
+                            <button type="submit" onclick="return confirm('Are you sure you want to delete this user?')">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </form>
 
+                        <!-- Edit Button -->
                         <button onclick="window.location.href='{{ route('users.edit', $user->id) }}'">
                             <i class="fas fa-edit"></i>
                         </button>
+
+                        <!-- Activate/Deactivate Button -->
+                        <form action="{{ route('users.toggleActivation', $user->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('PATCH')
+                            @if ($user->actived)
+                                <button type="submit" class="btn-deactivate">
+                                    Deactivate
+                                </button>
+                            @else
+                                <button type="submit" class="btn-activate">
+                                    Activate
+                                </button>
+                            @endif
+                        </form>
                     </td>
                 </tr>
             @endforeach

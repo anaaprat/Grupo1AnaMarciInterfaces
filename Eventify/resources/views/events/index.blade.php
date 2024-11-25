@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,10 +14,12 @@
             padding: 20px;
             position: relative;
         }
+
         h1 {
             text-align: center;
             margin-bottom: 20px;
         }
+
         .btn-logout {
             background-color: #e74c3c;
             border: none;
@@ -31,9 +34,11 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             transition: background-color 0.3s;
         }
+
         .btn-logout:hover {
             background-color: #c0392b;
         }
+
         .menu {
             position: fixed;
             bottom: 20px;
@@ -44,6 +49,7 @@
             padding: 10px;
             z-index: 1000;
         }
+
         .menu-item {
             position: relative;
             cursor: default;
@@ -52,9 +58,11 @@
             border-radius: 5px;
             transition: background-color 0.2s;
         }
+
         .menu-item:hover {
             background-color: #5a4a78;
         }
+
         .dropdown {
             display: none;
             position: absolute;
@@ -68,9 +76,11 @@
             transform: translateX(-50%);
             bottom: 100%;
         }
+
         .menu-item:hover .dropdown {
             display: block;
         }
+
         .category,
         .clear-filters {
             padding: 5px 10px;
@@ -81,14 +91,17 @@
             transition: background-color 0.2s;
             cursor: pointer;
         }
+
         .category:hover,
         .clear-filters:hover {
             background-color: #7c6e9a;
         }
+
         .category i,
         .clear-filters i {
             margin-right: 8px;
         }
+
         .btn-add {
             background-color: #2ecc71;
             border: none;
@@ -103,16 +116,16 @@
             cursor: pointer;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
+
         .btn-add:hover {
             background-color: #27ae60;
         }
 
-       
         .event-list {
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
-            justify-content: center; 
+            justify-content: center;
         }
 
         .event-card {
@@ -124,18 +137,22 @@
             margin-bottom: 20px;
             box-sizing: border-box;
         }
+
         .event-card h5 {
             color: #fff;
             font-weight: bold;
         }
+
         .event-card p {
             color: #d1c4e9;
         }
+
         .event-card .manage-buttons {
             display: flex;
             justify-content: space-between;
             margin-top: 10px;
         }
+
         .manage-buttons button {
             background-color: transparent;
             border: 1px solid #fff;
@@ -145,6 +162,7 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
+
         .manage-buttons button:hover {
             background-color: #7c6e9a;
         }
@@ -158,11 +176,21 @@
             text-align: center;
             width: 100%;
         }
+
         .btn-manage:hover {
             background-color: #7c6e9a;
         }
+
+        #no-events-message {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+            color: #f0e6ff;
+        }
     </style>
 </head>
+
 <body>
     <button class="btn-logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
         <i class="fas fa-sign-out-alt"></i>
@@ -170,7 +198,15 @@
     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
         @csrf
     </form>
+
     <h1>Manage Events</h1>
+    
+    <!-- Ordenar eventos por fecha -->
+    <div style="text-align: center; margin-bottom: 20px;">
+        <a href="{{ route('events.index', ['order' => 'asc']) }}" style="color: white; margin-right: 10px;">Order by Oldest</a>
+        <a href="{{ route('events.index', ['order' => 'desc']) }}" style="color: white;">Order by Newest</a>
+    </div>
+
     <div class="menu">
         <div class="menu-item">
             Events
@@ -190,6 +226,8 @@
             </div>
         </div>
     </div>
+
+    <div id="no-events-message"></div>
     
     <div class="event-list">
         @foreach ($events as $event)
@@ -197,7 +235,7 @@
                 <div class="event-card" data-category-id="{{ $event->category_id }}">
                     <h5>{{ $event->title }}</h5>
                     <p>{{ $event->description }}</p>
-                    <p><strong>Start Time:</strong> {{ $event->start_time }}</p>
+                    <p><strong>Start Time:</strong> {{ \Carbon\Carbon::parse($event->start_time)->format('F j, Y, g:i A') }}</p>
                     <p><strong>Location:</strong> {{ $event->location }}</p>
                     <div class="manage-buttons">
                         <a href="{{ route('events.show', $event->id) }}" title="View">
@@ -230,15 +268,49 @@
     <script>
         function filterEvents(categoryId) {
             const cards = document.querySelectorAll('.event-card');
+            let visibleCount = 0;
+
             cards.forEach(card => {
-                card.style.display = card.getAttribute('data-category-id') == categoryId ? '' : 'none';
+                if (card.getAttribute('data-category-id') == categoryId) {
+                    card.style.display = '';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
             });
+
+            const noEventsMessage = document.getElementById('no-events-message');
+            if (visibleCount === 0) {
+                noEventsMessage.textContent = 'No events found for this category.';
+                noEventsMessage.style.display = 'block';
+            } else {
+                noEventsMessage.style.display = 'none';
+            }
         }
 
         function clearFilters() {
             const cards = document.querySelectorAll('.event-card');
             cards.forEach(card => card.style.display = '');
+
+            const noEventsMessage = document.getElementById('no-events-message');
+            if (cards.length === 0) {
+                noEventsMessage.textContent = 'No events available.';
+                noEventsMessage.style.display = 'block';
+            } else {
+                noEventsMessage.style.display = 'none';
+            }
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.event-card');
+            const noEventsMessage = document.getElementById('no-events-message');
+
+            if (cards.length === 0) {
+                noEventsMessage.textContent = 'No events available.';
+                noEventsMessage.style.display = 'block';
+            }
+        });
     </script>
 </body>
+
 </html>

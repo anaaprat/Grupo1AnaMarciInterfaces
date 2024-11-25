@@ -62,12 +62,15 @@ Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show')->
 Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy')->middleware('role:a');
 Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit')->middleware('role:a');
 Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update')->middleware('role:a');
+Route::patch('/users/{id}/toggle-activation', [UserController::class, 'toggleActivation'])->name('users.toggleActivation')->middleware('role:a');
+
 
 //User
 Route::get('/dashboard', [EventController::class, 'availableEvents'])->name('users.dashboard');
 Route::post('/events/register/{id}', [EventController::class, 'registerEvent'])->name('events.register');
 Route::get('/my-events', [EventController::class, 'myEvents'])->name('users.userEvents');
 Route::delete('/events/{event}/unregister', [EventAttendeesController::class, 'destroy'])->name('events.unregister');
+
 
 //PDF
 Route::post('/send-events-pdf', [InformesController::class, 'sendEventsPdf'])->name('sendEventsPdf');
