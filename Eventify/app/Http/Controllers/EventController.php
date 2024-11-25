@@ -74,14 +74,14 @@ class EventController extends Controller
     }
 
     public function show(string $id)
-{
-    $event = Event::findOrFail($id);
-    $user = auth()->user();
+    {
+        $event = Event::findOrFail($id);
+        $user = auth()->user();
 
-    $isOrganizer = $event->organized_id === $user->id;
+        $isOrganizer = $event->organized_id === $user->id;
 
-    return view('events.show', compact('event', 'isOrganizer'));
-}
+        return view('events.show', compact('event', 'isOrganizer'));
+    }
 
 
     public function edit($id)
@@ -182,7 +182,7 @@ class EventController extends Controller
 
     public function myEvents()
     {
-        $user = auth()->user();
+        $user = auth()->user(); 
         $eventsUser = $user->registeredEvents()->get(); 
         return view('users.userEvents', compact('eventsUser'));
     }

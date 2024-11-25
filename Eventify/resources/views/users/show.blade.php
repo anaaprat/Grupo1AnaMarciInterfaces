@@ -166,12 +166,10 @@
             <i class="fas fa-arrow-left"></i> Back to Users
         </a>
 
-        <!-- Foto del usuario -->
         <div class="user-photo" id="userPhoto">
             <img src="{{ asset('/storage/imagesUser/' . $user->profile_picture) }}" alt="User Profile Picture">
         </div>
 
-        <!-- Detalles del usuario -->
         <div class="user-details">
             <h1>User Details</h1>
 
@@ -200,7 +198,6 @@
         </div>
     </div>
 
-    <!-- Foto Grande (lightbox) -->
     <div class="large-photo" id="largePhoto">
         <button class="close-btn" id="closeBtn">&times;</button>
         <img id="largeImage" src="" alt="User Profile Picture">

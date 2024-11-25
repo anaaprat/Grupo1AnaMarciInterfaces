@@ -2,6 +2,14 @@
 
 @section('content')
 <div class="container mt-5">
+    <div class="d-flex justify-content-end mb-3">
+        <form action="{{ route('sendEventsPdf') }}" method="POST">
+            @csrf
+            <button type="submit" class="btn btn-primary" style="background-color: #5B3F8D; border: none;">Send
+                Events</button>
+        </form>
+    </div>
+
     <h1 class="text-center"
         style="color: #5B3F8D; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: bold;">
         My Registered Events
@@ -19,24 +27,27 @@
         </div>
     @endif
 
+    <!-- Submenú -->
+    <div class="text-center mb-4">
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="eventsDropdown"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                Events
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="eventsDropdown">
+                <li><a class="dropdown-item" href="{{ route('users.dashboard') }}">All Events</a></li>
+                <li><a class="dropdown-item" href="{{ route('users.userEvents') }}">My Events</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Mensaje si no hay eventos registrados -->
     @if($eventsUser->isEmpty())
         <div class="alert alert-info text-center">
             You are not registered for any events.
         </div>
     @else
-        <!-- Submenú -->
-        <div class="text-center mb-4">
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="eventsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    Events
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="eventsDropdown">
-                    <li><a class="dropdown-item" href="{{ route('users.dashboard') }}">All Events</a></li>
-                    <li><a class="dropdown-item" href="{{ route('users.userEvents') }}">My Events</a></li>
-                </ul>
-            </div>
-        </div>
-
+        <!-- Lista de eventos -->
         <div class="row mt-4">
             @foreach($eventsUser as $event)
                 <div class="col-md-4 mb-4 event-card">
@@ -73,7 +84,6 @@
                                 <a href="{{ route('events.show', $event->id) }}" class="btn"
                                     style="background-color: #5B3F8D; color: white;">View Details</a>
                             </div>
-
                         </div>
                     </div>
                 </div>

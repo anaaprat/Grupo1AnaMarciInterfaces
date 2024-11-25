@@ -6,6 +6,7 @@ use App\Http\Controllers\EventAttendeesController;
 use App\Http\Controllers\EventController;
 use Illuminate\Support\Facades\Auth; 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InformesController;
 use App\Http\Controllers\Auth\VerificationController;
 
 
@@ -67,5 +68,8 @@ Route::get('/dashboard', [EventController::class, 'availableEvents'])->name('use
 Route::post('/events/register/{id}', [EventController::class, 'registerEvent'])->name('events.register');
 Route::get('/my-events', [EventController::class, 'myEvents'])->name('users.userEvents');
 Route::delete('/events/{event}/unregister', [EventAttendeesController::class, 'destroy'])->name('events.unregister');
+
+//PDF
+Route::post('/send-events-pdf', [InformesController::class, 'sendEventsPdf'])->name('sendEventsPdf');
 
 

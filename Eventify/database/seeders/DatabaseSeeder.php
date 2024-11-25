@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             'password' => '12345678',
             'actived' => 1,
             'email_confirmed' => 1,
+            'profile_picture' => 'marcita.jpg',
             'role' => 'o',
         ]);
         \App\Models\User::factory()->create([
@@ -33,6 +34,7 @@ class DatabaseSeeder extends Seeder
             'password' => '12345678',
             'actived' => 1,
             'email_confirmed' => 1,
+            'profile_picture' => 'anaprat.jpg',
             'role' => 'u',
         ]);
         \App\Models\Category::factory()->create([
