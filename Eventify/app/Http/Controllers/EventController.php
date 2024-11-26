@@ -56,7 +56,7 @@ class EventController extends Controller
 
         if ($request->hasFile('image_file')) {
             $image = $request->file('image_file');
-            $imagePath = $image->store('public/imagesEvent');
+            $imagePath = $image->move('storage/-+7845/imagesEvent');
             $imageName = basename($imagePath);
         }
 
