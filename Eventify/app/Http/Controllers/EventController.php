@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 
 
-
 class EventController extends Controller
 {
 
@@ -28,8 +27,6 @@ class EventController extends Controller
 
         return view('events.index', compact('events'));
     }
-
-
 
 
     public function create()
@@ -139,7 +136,6 @@ class EventController extends Controller
 
         return redirect()->route('events.index')->with('success', 'Event updated successfully.');
     }
-
 
 
     public function destroy(string $id)
