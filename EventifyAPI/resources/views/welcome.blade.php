@@ -12,53 +12,70 @@
             body {
                 font-family: 'Figtree', sans-serif;
                 margin: 0;
-                background-color: #f3f4f6;
+                background-color: #fef6e4; 
                 color: #333;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                height: 100vh;
+                min-height: 100vh;
+                position: relative;
+            }
+
+            .header {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+            }
+
+            .header a {
+                text-decoration: none;
+                color: #fff;
+                background-color: #ff6f61;
+                padding: 0.5rem 1rem;
+                border-radius: 5px;
+                font-weight: bold;
+                margin: 0 0.5rem;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                transition: all 0.3s ease;
+            }
+
+            .header a:hover {
+                background-color: #e85b51;
+                transform: translateY(-2px); 
             }
 
             .container {
                 text-align: center;
-                padding: 2rem;
-                background-color: #fff;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                border-radius: 8px;
+                padding: 2.5rem;
+                background-color: #ffffff;
+                box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+                border-radius: 15px;
+                max-width: 600px;
+                width: 90%;
             }
 
             h1 {
-                color: #e3342f;
-                font-size: 2.5rem;
+                color: #ff6f61;
+                font-size: 3rem;
                 margin-bottom: 1rem;
             }
 
             p {
-                font-size: 1.25rem;
+                font-size: 1.2rem;
                 margin-bottom: 2rem;
                 color: #555;
+                line-height: 1.6;
             }
 
-            a {
-                text-decoration: none;
-                color: #fff;
-                background-color: #e3342f;
-                padding: 0.75rem 1.5rem;
-                border-radius: 5px;
-                font-weight: bold;
-                margin: 0 0.5rem;
-            }
-
-            a:hover {
-                background-color: #cc1f1a;
+            .footer {
+                margin-top: 2rem;
+                font-size: 0.9rem;
+                color: #aaa;
             }
         </style>
     </head>
     <body>
-        <div class="container">
-            <h1>Welcome to Eventify</h1>
-            <p>The best place to find your events and the fastest way to register in them.</p>
+        <div class="header">
             @if (Route::has('login'))
                 <a href="{{ route('login') }}">Login</a>
                 @if (Route::has('register'))
@@ -66,5 +83,9 @@
                 @endif
             @endif
         </div>
-    </body>
+        <div class="container">
+            <h1>Welcome to Eventify</h1>
+            <p>Explore and register for your favorite events, all in one place. Let Eventify make your experience seamless and enjoyable!</p>
+        </div>
+    </body>
 </html>

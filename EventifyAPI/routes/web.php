@@ -20,4 +20,4 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/events', [EventController::class, 'view'])->name('events.index');
+Route::get('/events', [EventController::class, 'view'])->name('events.index')->middleware('auth');

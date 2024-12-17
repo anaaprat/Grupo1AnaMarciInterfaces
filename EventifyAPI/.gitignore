@@ -19,7 +19,6 @@ yarn-error.log
 
 # Laravel
 .env.*
-/storage/
 /bootstrap/cache
 # Visual Studio Code
 
