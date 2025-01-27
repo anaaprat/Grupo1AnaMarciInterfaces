@@ -1,66 +1,115 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Manual de Usuario de la Aplicación Back-End
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Introducción
+Este manual tiene como objetivo guiar a los usuarios no experimentados en el uso de la aplicación Back-End. Aquí aprenderás a manejar las funciones principales de la página web, como crear, editar y eliminar eventos, además de suscribirte o eliminarte de ellos.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Tabla de Contenidos
+1. [Inicio de Sesión](#inicio-de-sesión)
+2. [Registro](#registro)
+3. [Panel de Administración](#panel-de-administración)
+4. [Funciones del Usuario](#funciones-del-usuario)
+   - [Ver Eventos Disponibles](#ver-eventos-disponibles)
+   - [Registrarse en un Evento](#registrarse-en-un-evento)
+   - [Gestionar Tus Eventos](#gestionar-tus-eventos)
+5. [Funciones del Organizador](#funciones-del-organizador)
+   - [Crear Eventos](#crear-eventos)
+   - [Editar y Eliminar Eventos](#editar-y-eliminar-eventos)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Inicio de Sesión
+Para acceder a la aplicación:
+1. Dirígete a la pantalla de inicio de sesión.
+![Descripción de la imagen](images/1PantallaInicio.png)
+2. Ingresa tu **correo electrónico** y **contraseña**.
+3. Haz clic en el botón **Entrar**.
+![Descripción de la imagen](images/2Login.png)
+[⬆ Volver a la Tabla de Contenidos](#tabla-de-contenidos)
+---
 
-## Learning Laravel
+## Registro
+Para crear una cuenta:
+1. Accede a la página de registro.
+![Descripción de la imagen](images/3LoginRegistro.png)
+2. Completa el formulario con los siguientes datos:
+   - Selecciona el tipo de usuario: **Usuario** o **Organizador**.
+   - Nombre.
+   - Correo electrónico.
+   - Contraseña y confirmación de contraseña.
+![Descripción de la imagen](images/4Registro.png)
+3. Haz clic en **Registrarse**.
+4. Valida tu correo haciendo clic en el enlace recibido por email.
+![Descripción de la imagen](images/5CorreoVerificacion.png)
+5. Espera a que el administrador active tu cuenta.
+![Descripción de la imagen](images/6EsperarActivar.png)
+[⬆ Volver a la Tabla de Contenidos](#tabla-de-contenidos)
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Panel de Administración
+### Funciones del Administrador
+- **Ver Usuarios:** Lista completa de los usuarios registrados.
+![Descripción de la imagen](images/7Admin.png)
+- **Visualizar un Usuario:** Visualizar información de un solo usuario.
+![Descripción de la imagen](images/9AdminVisualizar.png)
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- **Activar/Desactivar Usuarios:** Habilita o deshabilita el acceso de usuarios.
+![Descripción de la imagen](images/8AdminActivarDesactivar.png)
+- **Editar Usuarios:** Modifica la información de cualquier usuario.
+![Descripción de la imagen](images/11AdminEditar.png)
+- **Eliminar Usuarios:** Elimina usuarios.
+![Descripción de la imagen](images/10AdminEliminar.png)
+[⬆ Volver a la Tabla de Contenidos](#tabla-de-contenidos)
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Funciones del Usuario
 
-## Laravel Sponsors
+### Ver Eventos Disponibles
+1. Accede al menú y selecciona la opción **Events**.
+2. Visualiza los eventos disponibles a partir del día siguiente en los que aún no estés registrado.
+![Descripción de la imagen](images/12TodosEventosUser.png)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
 
-### Premium Partners
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+### Registrarse en un Evento
+1. Desde la lista de eventos disponibles, haz clic en el botón **Registrarse** del evento deseado.
+2. El evento desaparecerá de la lista una vez registrado.
+![Descripción de la imagen](images/13RegistrarEvento.png)
 
-## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Gestionar Tus Eventos
+1. Accede al menú y selecciona **My Events**.
+2. Visualiza todos los eventos en los que estás registrado.
+![Descripción de la imagen](images/14MisEventosUser.png)
+3. Opciones disponibles:
+   - **Ver Información:** Consulta los detalles del evento.
+   - **Cancelar Registro:** Elimínate del evento.
+   - **Enviar Eventos:** Recibe un correo con un PDF de los eventos en los que estás registrado.
+   ![Descripción de la imagen](images/15MandarPDF.png)
+[⬆ Volver a la Tabla de Contenidos](#tabla-de-contenidos)
+---
 
-## Code of Conduct
+## Funciones del Organizador
+Ver todos los eventos.
+![Descripción de la imagen](images/16VerEventos.png)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Crear Eventos
+1. Selecciona **Crear Evento** que es un botón con la forma +. 
+![Descripción de la imagen](images/17AñadirEvento.png)
+2. Completa el formulario con la información del evento.
+3. Haz clic en **Guardar** para registrar el evento.
+![Descripción de la imagen](images/18FormularioEvento.png) ![Descripción de la imagen](images/19FormularioPT2.png)
 
-## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Editar y Eliminar Eventos
+1. Desde la lista de eventos creados, poder manejarlos.
+2. Opciones disponibles:
+   - **Visualizar:** Visualizar los detalles del evento.
+   - **Editar:** Modifica los detalles del evento.
+   - **Eliminar:** Borra el evento de la lista.
+![Descripción de la imagen](images/20ManejarEventos.png)
+[⬆ Volver a la Tabla de Contenidos](#tabla-de-contenidos)
+---
 
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+¡Gracias por usar nuestra aplicación! 😊
