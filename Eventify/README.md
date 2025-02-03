@@ -16,6 +16,7 @@ Este manual tiene como objetivo guiar a los usuarios no experimentados en el uso
 5. [Funciones del Organizador](#funciones-del-organizador)
    - [Crear Eventos](#crear-eventos)
    - [Editar y Eliminar Eventos](#editar-y-eliminar-eventos)
+6. [Pruebas Unitarias](#pruebas-unitarias)
 
 ---
 
@@ -111,5 +112,11 @@ Ver todos los eventos.
 ![Descripción de la imagen](images/20ManejarEventos.png)
 [⬆ Volver a la Tabla de Contenidos](#tabla-de-contenidos)
 ---
+
+## Pruebas Unitarias
+Para comprobar los test unitarios tienes que poner en la terminal php artisan test tests/Feature.
+Una vez hayas puesto eso en la terminal te saldran los test y si funcionan o dan error. Si todo esta bien tendria que salirte como en la siguiente imagen.  
+![Descripción de la imagen](images/21testUnitarios.png)
+
 
 ¡Gracias por usar nuestra aplicación! 😊
