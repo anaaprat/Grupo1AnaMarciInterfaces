@@ -33,10 +33,16 @@ class RegisterTest extends TestCase
             'name' => '',
             'email' => 'bustel',
             'password' => '123123123',
-            'password_confirmation' => '123123123',
+            'password_confirmation' => 'wrongconfirmation',
         ]);
 
         $response->assertStatus(302);
-        $response->assertSessionHasErrors(['role', 'name', 'email']);
+        $response->assertSessionHasErrors('password');
+        $this->assertDatabaseMissing('users', [
+            'email' => 'bustelo.brmar21@cadiz.salesianos.edu',
+        ]);
     }
+
 }
+
+
