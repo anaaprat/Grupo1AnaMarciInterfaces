@@ -51,6 +51,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'technology',
             'description' => 'Category for technology events',
         ]);
-        
+        \App\Models\Event::factory()->count(10)->create();
+
     }
 }
